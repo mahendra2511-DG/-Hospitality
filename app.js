@@ -15,7 +15,7 @@ const KPIS = [
   },
   {
     "name": "ADR (Average Daily Rate)",
-    "desc": "Average amount paid per room booked — the standard hospitality yardstick for pricing performance.",
+    "desc": "Average amount paid per room booked — the standard hospitality yardstick for pricing performance. Note: this project's metrics register defines the denominator as Total Bookings, a simplification — the true industry-standard denominator is Room Nights (stay_duration summed), which differs whenever average length of stay exceeds one night.",
     "formula": "DIVIDE([Revenue], [Total Bookings], 0)",
     "table": "fact_bookings",
     "cat": "Revenue",
@@ -261,6 +261,16 @@ const TABLES = [
 const RELATIONSHIPS = ["fact_bookings → dim_hotels  (property_id, Many:1)", "fact_bookings → dim_date  (check_in_date = date, Many:1)", "fact_bookings → dim_rooms  (room_category = room_id, Many:1)", "fact_aggregated_bookings → dim_hotels  (property_id, Many:1)", "fact_aggregated_bookings → dim_date  (check_in_date = date, Many:1)", "fact_aggregated_bookings → dim_rooms  (room_category = room_id, Many:1)", "fact_bookings ↔ fact_aggregated_bookings  — joined on the composite key (property_id, check_in_date, room_category) in the vw_hotel_booking_analysis view, not a simple 1:1 key"];
 const LOAD_ORDER = ["1. dim_hotels — 25 properties across 4 cities", "2. dim_rooms — 4 room types → 4 room classes", "3. dim_date — 92 days, May–Jul 2022, with wn and day_type calculated columns", "4. fact_bookings — 134,590 individual booking transactions", "5. fact_aggregated_bookings — 9,200 rows, pre-aggregated by property/date/room-type for Occupancy % and RevPAR"];
 const NULL_NOTES = ["fact_bookings.ratings_given is populated for only 56,683 of 134,590 rows (~42%) — guests who cancelled or no-showed never left a rating, which is an expected null, not a data-quality problem. Average Rating must implicitly (AVERAGE() already does this) skip the blanks rather than treating them as 0.", "fact_bookings carries 10 columns beyond what the metadata file documents — customer_id, payment_method, stay_duration, cancellation_reason, is_loyalty_member, country, customer_age, special_requests, discount_applied, booking_channel. These are genuinely present in the file and usable, they're just undocumented in the source hand-off — a realistic 'read the actual file, not just the data dictionary' situation.", "fact_aggregated_bookings has no single-column primary key — its grain is one row per (property_id, check_in_date, room_category) combination, and that's also the exact composite join key used to connect it back to fact_bookings in the mart view.", "dim_hotels has 16 Luxury properties and 9 Business properties (25 total) — an intentionally uneven split worth knowing before someone asks why Luxury dominates the Revenue by Category chart.", "Total Successful Bookings (from fact_aggregated_bookings, 134,590) happens to equal Total Bookings (from fact_bookings, also 134,590) in this dataset — that's a coincidence of how the sample data was generated, not a guaranteed identity; don't assume the two will always match in a different dataset.", "dim_date.day_type is calculated with a business-specific rule — Friday and Saturday count as 'Weekend', Sunday through Thursday as 'Weekday' — different from the calendar-standard Saturday/Sunday weekend, because that's literally what the stakeholder specified. Getting this rule wrong silently breaks every Weekday vs Weekend KPI."];
+const GOTCHAS = [
+  { t: "Friday + Saturday = \"Weekend\"", d: "dim_date.day_type uses a business-specific rule — Friday and Saturday, not the calendar-standard Saturday/Sunday. Every Weekday-vs-Weekend KPI is silently wrong if you rebuild this with a generic DATENAME('weekday', ...) or a textbook formula instead of the stakeholder's actual definition." },
+  { t: "Two fact tables, two grains", d: "fact_bookings is one row per individual booking; fact_aggregated_bookings is one row per property × date × room_category. They join on a 3-column composite key. Dropping room_category from that join silently fans out or drops rows and quietly breaks Occupancy % and RevPAR." },
+  { t: "ratings_given is null on purpose", d: "Only ~42% of fact_bookings rows have a rating — guests who cancelled or no-showed never left one. That's an expected null, not a data-quality problem, and AVERAGE() already skips blanks correctly. Don't \"fix\" it by imputing zeros." },
+  { t: "revenue_realized ≠ revenue_generated", d: "Cancelled bookings retain only 60% of revenue_generated (40% is refunded); Checked Out and No Show bookings keep 100%. That logic is already baked into revenue_realized — summing revenue_generated instead silently overstates actual revenue." },
+  { t: "Total Successful Bookings == Total Bookings — coincidence, not a rule", d: "In this sample, fact_aggregated_bookings' successful_bookings sum (134,590) happens to equal fact_bookings' total row count (134,590). That's specific to how this sample was generated — don't assume the two will always tie out in a different dataset, and don't build a QA check that silently passes because of it." },
+  { t: "ADR: bookings vs room nights — the classic trap", d: "This project's own KPI register defines ADR as Revenue ÷ Total Bookings. In real hospitality practice ADR is usually Revenue ÷ room nights (stay_duration summed), so a 3-night booking should count as 3, not 1. Know which definition you're using and be ready to explain the difference — interviewers ask this specifically to see if you'll default to the textbook answer without checking the actual measure." },
+  { t: "\"Others\" is the single biggest booking platform", d: "41% of bookings (55,066 of 134,590) fall into an unnamed \"others\" platform bucket — bigger than any named OTA. Treat that as a data-quality gap to flag, not a channel-strategy insight to act on at face value." },
+];
+
 const CALC_FIELDS = ["wn (dim_date) — WEEKNUM(dim_date[date]) — powers every Week-over-Week KPI", "day_type (dim_date) — IF(WEEKDAY(date,1) > 5, \"Weekend\", \"Weekday\") — Friday/Saturday = Weekend per stakeholder rule, not the calendar default", "room_class (via dim_rooms) — maps RT1–RT4 to Standard / Elite / Premium / Presidential", "hotel_category (via dim_hotels) — Luxury / Business, used for Revenue by Category and Class Wise Revenue visuals"];
 const JOIN_GUIDE = [["DIM", "dim_hotels", "property_id", "—", "fact_bookings, fact_aggregated_bookings (1:Many)", "1 row per hotel — 25 rows, 4 cities"], ["DIM", "dim_rooms", "room_id", "—", "fact_bookings.room_category, fact_aggregated_bookings.room_category", "1 row per room type — 4 rows"], ["DIM", "dim_date", "date", "—", "fact_bookings.check_in_date, fact_aggregated_bookings.check_in_date", "1 row per day — 92 rows, May–Jul 2022"], ["FACT", "fact_bookings", "booking_id", "property_id, check_in_date, room_category", "dim_hotels, dim_date, dim_rooms", "1 row per individual booking — 134,590 rows"], ["FACT", "fact_aggregated_bookings", "— (composite)", "property_id, check_in_date, room_category", "dim_hotels, dim_date, dim_rooms, fact_bookings (composite)", "1 row per property × date × room type — 9,200 rows"]];
 const JOIN_PATHS = [["Bookings by hotel", "fact_bookings[property_id] = dim_hotels[property_id]"], ["Bookings by date", "fact_bookings[check_in_date] = dim_date[date]"], ["Bookings by room class", "fact_bookings[room_category] = dim_rooms[room_id]"], ["Occupancy / RevPAR join", "fact_bookings[property_id, check_in_date, room_category] = fact_aggregated_bookings[property_id, check_in_date, room_category]"], ["Full mart view", "fact_bookings LEFT JOIN dim_hotels, dim_date, dim_rooms, fact_aggregated_bookings — exactly vw_hotel_booking_analysis"]];
@@ -809,7 +819,7 @@ const SOFTWARE_LINKS = [
 ];
 
 /* ---------------- INTERVIEW PREP ---------------- */
-const QA_CATS = ["Explain This Project", "SQL", "Power BI & DAX", "Tableau", "Data Modeling", "Hospitality Domain", "General & HR", "Rapid Fire"];
+const QA_CATS = ["Explain This Project", "SQL", "Power BI & DAX", "Tableau", "Data Modeling", "Hospitality Domain", "Scenario-Based", "General & HR", "Rapid Fire"];
 
 const QA = [
   // ---------------- Explain This Project ----------------
@@ -819,14 +829,21 @@ const QA = [
   { cat: "Explain This Project", q: "What data did you use, and where did it come from?", a: "Name the scale precisely: a 5-table hospitality dataset — dim_hotels (25 properties), dim_rooms (4 room classes), dim_date (92 days, May–Jul), fact_bookings (134,590 individual bookings), and fact_aggregated_bookings (9,200 pre-computed occupancy rows) — for an imaginary hotel group called Shodwe. Precision here signals you understand the data, not just the charts built on top of it.", signal: "Tests whether 'hotel booking data' gets replaced with real numbers." },
   { cat: "Explain This Project", q: "Why does this dataset include both fact_bookings and a separate fact_aggregated_bookings table — isn't that redundant?", a: "They answer different questions at different grains. fact_bookings is transactional — one row per individual booking, needed for anything guest-level (ratings, cancellation reasons, booking platform). fact_aggregated_bookings is pre-computed at the property/date/room-type grain specifically to make Occupancy % and RevPAR fast and simple — those two KPIs need 'how many rooms were available' (capacity), a number that doesn't exist anywhere in fact_bookings itself. It's not redundant; it's two different units of analysis serving two different KPI families.", signal: "Tests understanding of why a second, differently-grained fact table exists rather than assuming duplication." },
 
+  { cat: "Explain This Project", q: "Walk me through the end-to-end pipeline from raw files to the final dashboard.", a: "1. Raw CSVs/Excel land from the PMS. 2. Data is loaded and cleaned in SQL (or first-pass cleaned in Excel). 3. We build the star schema and the mart view vw_hotel_booking_analysis. 4. Tableau and Power BI connect only to that mart view. 5. KPIs are implemented as measures. 6. QA runs the same SQL against the warehouse and reconciles every number on the dashboard. Nothing goes directly from Excel to the BI tools — that is the governed path.", signal: "Shows the candidate understands the full flow, not just one tool." },
+  { cat: "Explain This Project", q: "What would you improve in this project if you had two more weeks?", a: "Three things: 1) Replace the simplified ADR (Revenue ÷ Bookings) with true room-night ADR. 2) Add a proper booking-pace / on-the-books view so revenue managers can see future demand. 3) Implement basic row-level security so each property manager only sees their own hotel. Those three changes would make the dashboard production-ready instead of training-ready.", signal: "Shows self-awareness and product thinking." },
+
   // ---------------- SQL ----------------
-  { cat: "SQL", q: "How did you connect SQL to Tableau and Power BI in this project?", a: "In both tools you add a new data source and pick the native SQL connector, then supply the server host, port and credentials, choose Import or Live/DirectQuery, and select the mart view — vw_hotel_booking_analysis — rather than the raw fact tables directly.", signal: "Tests whether you actually did the connection yourself." },
+  { cat: "SQL", q: "How did you connect SQL to Tableau and Power BI in this project?", a: "We never pointed Tableau or Power BI at the raw Excel files. The five source tables were loaded into MySQL, cleaned, and exposed through a single governed mart view — vw_hotel_booking_analysis. Both BI tools connect only to that view (Import mode in Power BI, Extract or Live in Tableau). This gives one source of truth and makes QA simple: the same SQL that feeds the dashboard is what we run to reconcile every number.", signal: "Shows the candidate understands governed architecture instead of \"I just connected the Excel file.\"" },
   { cat: "SQL", q: "What problem did you face while working on this project, and how did you resolve it?", a: "Name something concrete: e.g. Occupancy % coming out wrong because you joined fact_bookings to fact_aggregated_bookings on property_id and check_in_date alone, silently fanning out rows because room_category wasn't included in the join — the fix was adding the third composite-key column. State the symptom, how you traced it, and the fix.", signal: "The single most common project follow-up after 'explain your project.'" },
-  { cat: "SQL", q: "Write a query to find duplicate rows in fact_aggregated_bookings.", a: "GROUP BY the table's composite grain — property_id, check_in_date, room_category — and filter with HAVING COUNT(*) > 1. Since this table has no single-column primary key, this composite grouping IS the duplicate check.", signal: "Tests: GROUP BY / HAVING on a composite grain, not just a single PK." },
+  { cat: "SQL", q: "Write a query to find duplicate rows in fact_aggregated_bookings.", a: "The table has no single-column primary key. Its grain is the composite (property_id, check_in_date, room_category). So the duplicate check is:<br><br><code>SELECT property_id, check_in_date, room_category, COUNT(*) AS cnt<br>FROM fact_aggregated_bookings<br>GROUP BY property_id, check_in_date, room_category<br>HAVING COUNT(*) > 1;</code><br><br>Any row returned is a true duplicate at the table's natural grain.", signal: "Tests: GROUP BY / HAVING on a composite grain, not just a single PK." },
   { cat: "SQL", q: "How would you calculate Occupancy % correctly in SQL?", a: "SELECT SUM(successful_bookings) * 100.0 / SUM(capacity) FROM fact_aggregated_bookings — both numerator and denominator come from the same table at the same grain, so no join is even required for the aggregate figure; a join to dim_hotels or dim_date is only needed if you want it sliced by property or date.", signal: "Tests recognizing that a KPI can sometimes be computed without any join at all, when both halves of the ratio live in the same table." },
   { cat: "SQL", q: "Write a query to build the vw_hotel_booking_analysis mart view for this project.", a: "SELECT fb.*, dh.property_name, dh.category, dh.city, dd.\"mmm yy\", dd.\"week no\", dd.day_type, dr.room_id, fab.successful_bookings, fab.capacity FROM fact_bookings fb LEFT JOIN dim_hotels dh ON fb.property_id=dh.property_id LEFT JOIN dim_date dd ON fb.check_in_date=dd.date LEFT JOIN dim_rooms dr ON fb.room_category=dr.room_class LEFT JOIN fact_aggregated_bookings fab ON fb.property_id=fab.property_id AND fb.check_in_date=fab.check_in_date AND fb.room_category=fab.room_category — this is the exact view specified in this project's Data Model.", signal: "Tests whether you can write the actual multi-table join with the correct composite join to fact_aggregated_bookings." },
   { cat: "SQL", q: "How would you implement the day_type business rule (Friday/Saturday = Weekend) in SQL?", a: "CASE WHEN DAYOFWEEK(date) IN (6,7) THEN 'Weekend' ELSE 'Weekday' END — but the exact day numbers depend entirely on your SQL dialect's week-start convention, so the safer pattern is CASE WHEN DAYNAME(date) IN ('Friday','Saturday') THEN 'Weekend' ELSE 'Weekday' END, which sidesteps the numbering ambiguity entirely.", signal: "Tests whether you catch that day-number conventions differ across SQL dialects — a real, easy-to-get-wrong translation of the DAX WEEKDAY() logic." },
   { cat: "SQL", q: "Why can't revenue_realized simply be summed the same way for every booking status?", a: "It already accounts for the difference — the metadata specifies that Cancelled bookings retain only 60% of revenue_generated (40% refunded), while Checked Out and No Show bookings keep 100%. That logic is baked into revenue_realized upstream, so summing it directly is correct; the trap is accidentally summing revenue_generated instead, which would overstate actual revenue by ignoring cancellation refunds entirely.", signal: "Tests whether you understand which of two similarly-named revenue columns to use, and why." },
+
+  { cat: "SQL", q: "How would you correctly calculate room nights / length of stay from check_in and check_out dates?", a: "Room nights = DATEDIFF(day, check_in_date, checkout_date). Never use booking count when the stay can be longer than one night. In this dataset stay_duration is already provided, but if it were missing I would compute it with DATEDIFF and then guard against negative or zero values. ADR and many other metrics become wrong if you treat every booking as one room night.", signal: "Fundamental hospitality SQL skill — most juniors get this wrong." },
+  { cat: "SQL", q: "Write a query for cancellation rate by booking_platform and city.", a: "<code>SELECT h.city, b.booking_platform,<br>&nbsp;&nbsp;COUNT(*) AS total_bookings,<br>&nbsp;&nbsp;SUM(CASE WHEN b.booking_status = 'Cancelled' THEN 1 ELSE 0 END) AS cancelled,<br>&nbsp;&nbsp;ROUND(100.0 * SUM(CASE WHEN b.booking_status = 'Cancelled' THEN 1 ELSE 0 END) / COUNT(*), 1) AS cancel_pct<br>FROM fact_bookings b<br>JOIN dim_hotels h ON b.property_id = h.property_id<br>GROUP BY h.city, b.booking_platform<br>ORDER BY cancel_pct DESC;</code><br>This is the exact view commercial teams use to decide which channels to tighten.", signal: "Practical multi-table aggregation + business framing." },
+  { cat: "SQL", q: "How do you handle the fact that ratings_given is null on roughly 58% of rows?", a: "I treat it as expected, not broken — cancelled and no-show guests never left a rating, so those rows have nothing to report. In SQL, AVG(ratings_given) already ignores NULLs automatically, so a plain <code>SELECT AVG(ratings_given) FROM fact_bookings WHERE booking_status = 'Checked Out'</code> is correct as-is. The trap is using COALESCE(ratings_given, 0) or a similar fallback — that would silently drag the average down by treating \"never asked\" the same as \"rated zero.\"", signal: "Tests whether a candidate distinguishes an expected null from a data-quality defect, and knows AVG() already handles it correctly." },
 
   // ---------------- Power BI & DAX ----------------
   { cat: "Power BI & DAX", q: "Walk me through building the Occupancy % measure in DAX, exactly as this project's metrics register defines it.", a: "Occupancy % = DIVIDE([Total Successful Bookings], [Total Capacity], 0) — where Total Successful Bookings = SUM(fact_aggregated_bookings[successful_bookings]) and Total Capacity = SUM(fact_aggregated_bookings[capacity]). Using DIVIDE with a 0 fallback avoids a divide-by-zero error when a filtered slice (e.g. one property, one day) has zero capacity rows.", signal: "Tests whether you know the exact DAX pattern from the project's own register, including the safe-division fallback." },
@@ -834,6 +851,10 @@ const QA = [
   { cat: "Power BI & DAX", q: "Why is Realisation % defined as 1 − (Cancellation % + No Show Rate %) instead of directly as Checked Out ÷ Total Bookings?", a: "They're mathematically identical (since Checked Out + Cancelled + No Show = Total Bookings), but writing it as the complement makes the relationship between all three outcome rates explicit on the page — if a stakeholder asks 'why is Realisation only 70%,' the answer is visibly 'because Cancellation is 24.8% and No Show is 5.0%,' not just a standalone number they have to reverse-engineer.", signal: "Tests understanding of a deliberate formula-design choice, not just verifying the math checks out." },
   { cat: "Power BI & DAX", q: "How would you build the day_type calculated column in Power BI, matching this project's exact business rule?", a: "day_type = VAR wkd = WEEKDAY(dim_date[date], 1) RETURN IF(wkd > 5, \"Weekend\", \"Weekday\") — with WEEKDAY(date, 1) returning Sunday=1 through Saturday=7, so wkd > 5 catches exactly Friday (6) and Saturday (7), matching the stakeholder's non-calendar-standard weekend definition.", signal: "Tests whether you can reproduce a specific, non-obvious business rule in DAX exactly as specified, not just 'a weekend flag.'" },
   { cat: "Power BI & DAX", q: "Booking % by Room Class uses ALL(dim_rooms[room_class]) inside its DIVIDE(). What does ALL() do here, and why is it needed?", a: "ALL(dim_rooms[room_class]) removes any existing filter on room_class for that one calculation, so the denominator becomes 'total bookings across every room class' regardless of what the visual is currently filtered to — giving a true percent-of-total. Without ALL(), the denominator would silently match whatever room_class filter is already applied, making every row show 100%.", signal: "Tests understanding of filter context removal — a genuinely common DAX percent-of-total pattern." },
+
+  { cat: "Power BI & DAX", q: "How would you implement Row Level Security so each hotel manager only sees their own property?", a: "Create a bridge table UserHotelAccess (UserEmail, property_id). In Power BI, create a role on DimHotels with the filter:<br><br><code>VAR CurrentUser = USERPRINCIPALNAME()<br>RETURN<br>CALCULATE(COUNTROWS(DimHotels),<br>&nbsp;&nbsp;FILTER(UserHotelAccess, UserHotelAccess[UserEmail] = CurrentUser)) &gt; 0</code><br><br>Test with 'View as' before every deployment. Regional managers get multiple rows; head office gets everything.", signal: "RLS is a very common interview topic for any multi-property dashboard." },
+  { cat: "Power BI & DAX", q: "What is the difference between a calculated column and a measure? Give an example from this project.", a: "A calculated column is computed row-by-row at refresh time and stored in the model. A measure is calculated at query time in the current filter context.<br><br>Example: stay_duration can be a calculated column (it never changes). Occupancy %, ADR, RevPAR, Cancellation % must be measures — they have to respond to whatever city, date or room class the user filters. Putting RevPAR as a column would produce wrong numbers the moment any filter is applied.", signal: "Classic DAX conceptual question — almost every Power BI interview asks it." },
+  { cat: "Power BI & DAX", q: "How would you create a dynamic title that shows the currently selected city and date range?", a: "Build a measure that reads the current filter context with SELECTEDVALUE() and falls back to a summary label when multiple values are selected, e.g. <code>Dynamic Title = \"Occupancy Dashboard — \" & SELECTEDVALUE(dim_hotels[city], \"All Cities\") & \" (\" & FORMAT(MIN(dim_date[date]), \"DD MMM\") & \" – \" & FORMAT(MAX(dim_date[date]), \"DD MMM\") & \")\"</code>. Then bind that measure to the visual title through Format pane → Title → Conditional formatting → Fields (or use a dedicated Card/Text visual above the page). It keeps every screenshot and export self-explanatory without a stakeholder needing to check the slicers.", signal: "Tests whether the candidate can turn slicer state into a readable page title, not just filter the visuals." },
 
   // ---------------- Tableau ----------------
   { cat: "Tableau", q: "How would you build the Weekday vs Weekend comparison view in Tableau?", a: "Put dim_date.day_type on Columns, SUM(revenue_realized) or COUNT(booking_id) on Rows, as a side-by-side bar chart — the day_type field itself needs to exist as a calculated field or a joined column from dim_date carrying the Friday/Saturday-as-weekend business rule, not Tableau's own DATENAME('weekday', ...) default.", signal: "Tests whether you'd import the project's specific day_type logic rather than relying on a generic weekday function." },
@@ -848,11 +869,27 @@ const QA = [
   { cat: "Data Modeling", q: "How would you design a Date dimension for this model, and what's unusual about this one?", a: "A standard Date table spans the full period with derived Year/Month/Quarter/Week columns — here it's a genuinely short 92-day table (May–Jul only) since the source data doesn't span a full year, and it carries a business-specific day_type column (Friday/Saturday = Weekend) rather than the calendar-standard Saturday/Sunday split, which is the one thing you cannot get right by just importing a generic date dimension template.", signal: "Tests whether you'd notice a project-specific business rule instead of defaulting to generic date-dimension boilerplate." },
 
   // ---------------- Hospitality Domain ----------------
-  { cat: "Hospitality Domain", q: "What's the difference between Occupancy % and Realisation %? They sound similar.", a: "Occupancy % measures rooms sold against rooms available (57.9% here) — a capacity-utilization metric. Realisation % measures how many of the bookings that were made actually converted into a completed stay, i.e. 1 minus cancellation and no-show rates (70.2% here) — a booking-quality metric. A hotel could have decent occupancy but poor realisation if a lot of bookings get cancelled and quickly rebooked by someone else; the two numbers answer genuinely different questions.", signal: "Tests precision on two metrics that sound similar but measure different things — capacity utilization vs. booking follow-through." },
-  { cat: "Hospitality Domain", q: "Why does ADR use Total Bookings as its denominator, but RevPAR uses Total Capacity?", a: "ADR (Average Daily Rate) answers 'how much did we charge per room we actually sold' — so it's scoped to sold rooms only. RevPAR (Revenue Per Available Room) answers 'how much revenue did we generate per room we could have sold, occupied or not' — so it's scoped to total capacity, which is always ≥ bookings. RevPAR is always ≤ ADR for the same period, and the gap between them is effectively a visual proxy for how much occupancy is costing the hotel in unrealized revenue.", signal: "Tests understanding of why two closely-related hospitality metrics use deliberately different denominators." },
+  { cat: "Hospitality Domain", q: "What's the difference between Occupancy % and Realisation %? They sound similar.", a: "They measure completely different things.<br><br>• Occupancy % = successful room nights ÷ available capacity → how full the hotel was.<br>• Realisation % = 1 − (Cancellation % + No-Show %) → what share of bookings actually turned into a stay.<br><br>You can have high occupancy and low realisation (heavy overbooking or late cancellations) or the opposite. Both belong on the dashboard because a GM needs both the capacity story and the demand-quality story.", signal: "Catches candidates who treat the two metrics as interchangeable." },
+  { cat: "Hospitality Domain", q: "Why does ADR use Total Bookings as its denominator, but RevPAR uses Total Capacity?", a: "They answer different questions. ADR asks 'how much did we charge for the rooms we actually sold?' so the clean denominator is sold room nights. RevPAR asks 'how much revenue did every available room generate, sold or not?' so the denominator is total capacity.<br><br>In this project the metrics register defines ADR as Revenue ÷ Total Bookings — that is a simplification. Industry standard (STR, most hotel groups) uses Revenue ÷ Room Nights. Because many bookings have stay_duration > 1, using booking count understates true ADR. In an interview I always state which definition the dashboard is using so the GM does not compare our number to external industry reports.", signal: "Tests whether the candidate knows the industry definition vs the project's simplified version and can explain the difference cleanly." },
   { cat: "Hospitality Domain", q: "Why did the stakeholder define 'weekend' as Friday and Saturday instead of the calendar-standard Saturday and Sunday?", a: "It reflects actual guest behavior for this hotel group's likely customer mix — business and leisure travelers checking in Friday for a weekend stay, checking out Saturday or Sunday — meaning Friday night demand and pricing behaves like a weekend, not a weekday, even though the calendar says otherwise. This is exactly why the BRD calls for KPIs to be defined 'based on feedback from stakeholder' rather than a generic textbook rule — the business context determines the definition, not a convention.", signal: "Tests whether you understand KPI definitions are business decisions, not universal constants." },
   { cat: "Hospitality Domain", q: "The dataset shows 'others' as the single largest booking platform (55,066 of 134,590 bookings) — bigger than any named OTA. What would you do with that finding?", a: "Flag it as a data-quality gap before treating it as an insight — an unnamed 'others' bucket that large (41% of all bookings) likely means the platform-tracking logic isn't capturing every channel correctly, or several smaller platforms are being lumped together. The right next step is asking the source system owner what's actually inside 'others' before making any channel-strategy recommendation based on it.", signal: "Tests whether you scrutinize a suspiciously large catch-all category instead of reporting it at face value." },
   { cat: "Hospitality Domain", q: "How would you explain RevPAR to a hotel GM who's never seen a BI dashboard?", a: "It's the single number that answers 'how much money is each room in my hotel actually making me, on average, whether it's occupied tonight or not.' Unlike ADR, which only counts rooms that sold, RevPAR punishes empty rooms — so a hotel with high prices but low occupancy can have a worse RevPAR than a hotel with slightly lower prices but consistently full rooms, which is exactly the tradeoff a GM needs visibility into.", signal: "Tests translating a formula into a plain-English business implication a non-technical GM would actually act on." },
+
+  // ---------------- Scenario-Based ----------------
+  { cat: "Scenario-Based", q: "The GM of Shodwe Grands Delhi calls you at 9 AM. \"Occupancy last week was 92% but my revenue is lower than the week when occupancy was only 78%. Explain this to me in simple terms and show me the numbers.\"", a: "I would not jump into a dashboard. First I confirm the exact date ranges. Then I pull:<br>• ADR for both weeks (almost certainly ADR dropped sharply)<br>• Room-class mix – more Standard (RT1) and fewer Premium/Presidential?<br>• Channel mix – higher share of OTA or discounted corporate rates?<br>• Discount_applied average and distribution<br>Then I show a simple comparison table: Occupancy | ADR | RevPAR | Revenue | % OTA | Avg Discount. Most of the time the story is \"we bought occupancy with rate\". I end with one clear recommendation (e.g. protect rate on weekends or tighten discount rules for certain channels).", signal: "Tests whether you diagnose with data before opening your mouth, and whether you land on ADR/discounting as the likely cause rather than guessing." },
+  { cat: "Scenario-Based", q: "Sudden spike in cancellations. Cancellation rate jumped from 18% to 31% in the last 10 days across Mumbai properties. Commercial team is panicking. What is your first 60-minute investigation plan?", a: "1. Confirm it is real (not a data issue) – compare vs aggregated file and previous weeks.<br>2. Slice by: property, room_category, booking_platform, booking_channel, lead_time bucket, country, loyalty flag.<br>3. Check cancellation_reason distribution – \"Found better deal\" vs \"Travel restrictions\" vs \"Change of plans\".<br>4. Look at booking window – are last-minute bookings (0–3 days) driving the spike?<br>5. Check if one OTA or one rate code is responsible for most of the increase.<br>Within 60 minutes I should be able to say: \"80% of the extra cancellations are coming from OTA + lead time &lt; 5 days on Standard rooms in two specific properties.\" Then commercial can act.", signal: "Tests structured triage under time pressure — confirm, slice, isolate the driver — rather than a vague \"I'd look into it.\"" },
+  { cat: "Scenario-Based", q: "New competitor opened nearby. A new luxury hotel opened 2 km from Shodwe Exotica Mumbai three weeks ago. You are asked to quantify the impact so far and recommend pricing/action.", a: "• Compare the 3 weeks after opening vs the same 3 weeks before (and vs same period last year if available).<br>• Metrics: Occupancy, ADR, RevPAR, Booking volume, Lead time, Ratings, Cancellation rate – for Exotica and for other Mumbai luxury properties as control group.<br>• Segment: weekend vs weekday, room class, channel.<br>• If ADR and occupancy both soft only at Exotica while other Mumbai luxury hotels are stable → competitor impact is likely.<br>• Recommendation examples: targeted rate fence on weekdays, package with breakfast, loyalty push, or monitor for another 2 weeks before reacting.", signal: "Tests whether you know to build a control group before attributing a metric change to a single cause." },
+  { cat: "Scenario-Based", q: "Revenue Manager wants a \"pace\" report. \"I need to know how next month is shaping up compared to how we were doing at the same point last year. Can you build me a booking pace view?\"", a: "Classic hospitality request. Even with limited history you explain the concept:<br>• On-the-books (OTB) revenue and room nights for future stay dates as of today.<br>• Compare with the OTB that existed on the same calendar day last year for the same future stay dates.<br>• Show by property, by week, by room class.<br>• Add pickup (how much was booked in the last 7 days) so they see momentum.<br>In Power BI this is usually two measures + a line chart with stay date on axis and a slicer for \"as-of\" date. In SQL you need a snapshot table or carefully reconstruct from booking_date.", signal: "Tests whether you know booking pace is a genuinely different concept from a simple period-over-period revenue comparison." },
+  { cat: "Scenario-Based", q: "Data discrepancy between two systems. The PMS shows 1,240 room nights sold last week. Your Power BI dashboard shows 1,187. Finance is using your number for the flash report. What do you do?", a: "1. Stay calm and treat it as a data-quality incident, not a fight.<br>2. Immediately reconcile at the lowest grain: property × date × room_category.<br>3. Common causes in hospitality: status mapping (No-Show counted differently), day-use rooms, complementary rooms, timezone/date boundary issues, or late modifications that missed the extract.<br>4. Produce a clear variance table and root-cause note within a few hours.<br>5. Agree with Finance which number is \"official\" for the flash and fix the pipeline so it does not happen again.<br>Never hide the difference or force the numbers to match without understanding why.", signal: "Tests composure and rigor under a real discrepancy, and whether you'd ever paper over a mismatch instead of explaining it." },
+  { cat: "Scenario-Based", q: "Leadership wants one number – \"Which is our best hotel?\" CEO asks in a meeting: \"Just tell me which hotel is performing best right now.\" How do you answer without being misleading?", a: "I refuse to give a single ranking without context. I say: \"Best depends on the lens. On pure RevPAR it is X. On occupancy it is Y. On growth vs last month it is Z. On guest rating it is W. If I have to pick one primary metric for overall health I use RevPAR, but I always show the top 3 with the other KPIs beside them.\"<br>Then I put a small ranked table on screen with Occupancy, ADR, RevPAR, Cancellation %, Avg Rating. This protects you from being quoted with a one-dimensional answer later.", signal: "Tests whether you resist collapsing a genuinely multi-metric question into a single misleading number just because leadership wants a quick answer." },
+  { cat: "Scenario-Based", q: "Loyalty members vs non-members. Marketing wants to know if loyalty members are actually more valuable. They only look at number of bookings. What analysis do you run?", a: "Compare is_loyalty_member = true vs false on:<br>• ADR and RevPAR contribution<br>• Average LOS<br>• Cancellation and No-show rate<br>• Repeat frequency (bookings per customer)<br>• Channel mix (do they book direct more often?)<br>• Ratings given<br>• Discount_applied (are we giving away too much to members?)<br>Often loyalty members have higher LOS and lower cancellation but sometimes lower ADR because of member rates. Net value is what matters, not just booking count.", signal: "Tests whether you catch that the stakeholder's chosen metric (booking count) doesn't actually answer their question (value)." },
+  { cat: "Scenario-Based", q: "Weekend vs Weekday strategy question. Revenue Manager says: \"Weekends are full but weekdays are weak in Bangalore. Should we drop weekday rates aggressively?\"", a: "I pull weekday vs weekend for Bangalore properties: Occupancy, ADR, RevPAR, Lead time, Channel mix, Room class mix, Cancellation rate.<br>Then I check:<br>• How much of weekday demand is corporate / long-stay vs leisure?<br>• What is the current booking pace for next 4–6 weeks on weekdays?<br>• Elasticity – when we dropped rates in the past, how much extra occupancy did we actually gain?<br>Blindly dropping rate can train the market to wait for discounts. Better options often include: corporate rate review, longer-stay discounts, package with meeting room/F&B, or targeted promotions only on specific soft dates.", signal: "Tests whether you push back on a reflexive \"just lower the price\" instinct with actual elasticity evidence." },
+  { cat: "Scenario-Based", q: "You have only 2 hours before a big meeting. Regional Director wants a one-page view of all 25 Shodwe properties for the last 30 days by 11 AM. It is currently 9 AM. What do you deliver?", a: "I do not try to build a perfect dashboard. I deliver a clean one-pager (Excel or Power BI screenshot) with:<br>• KPI cards: Total Revenue, Occupancy, ADR, RevPAR, Cancellation % (vs previous 30 days)<br>• Ranked table of 25 properties: Property | City | Category | Occ % | ADR | RevPAR | Cancel % | Rating<br>• Two small charts: Revenue by City, Occupancy trend last 4 weeks<br>• One insight call-out (e.g. \"Hyderabad Luxury properties showing 12% RevPAR soft – mainly ADR driven\")<br>Speed + clarity beats perfection when the clock is running.", signal: "Tests judgment under a hard deadline — knowing what to cut and still deliver something decision-useful." },
+  { cat: "Scenario-Based", q: "Suspected data leak / wrong discount. You notice several Presidential room bookings (RT4) with extremely high discount_applied and very low revenue_realized. What do you do?", a: "1. Flag the rows immediately and quantify the revenue leakage.<br>2. Check whether they share the same booking_platform, agent, or customer_id pattern.<br>3. Verify if the discount is within approved limits or if rate-code mapping is broken.<br>4. Escalate to Revenue Manager / Finance with the list of booking_ids – do not try to \"fix\" the numbers yourself.<br>5. Add a data-quality rule going forward: alert when discount on RT4 exceeds X% or ADR falls below a floor.<br>This is both an analytics and a control issue.", signal: "Tests whether you treat a suspicious pattern as an escalation, not something to quietly correct yourself." },
+
+  { cat: "Scenario-Based", q: "A hotel is running 95% occupancy but departmental profit (GOP) is down. What do you look at first?", a: "High occupancy with falling profit almost always means we bought the occupancy with rate or with expensive channels. I immediately check: 1) ADR trend, 2) Channel mix and commission cost, 3) Room-class mix (more Standard, fewer Premium), 4) Discount depth, 5) Cost per occupied room if cost data exists. Then I build a simple waterfall: Gross Revenue → Commission → Net Revenue → Departmental Profit so the GM sees exactly where the money disappeared.", signal: "Tests commercial thinking, not just KPI knowledge." },
+  { cat: "Scenario-Based", q: "How would you measure the impact of a 3% increase in OTA commission?", a: "Before-vs-after analysis (8–12 weeks each side). Calculate Net Revenue = revenue_realized × (1 – commission%). Also track volume (did the OTA send more bookings after the change?) and ADR. Most of the time the extra volume does not offset the higher commission. I present a waterfall so the commercial team can see the net impact in one view.", signal: "Directly relevant to revenue management decisions." },
+  { cat: "Scenario-Based", q: "Guest ratings dropped in one city — how do you investigate whether it's a data issue or a real service problem?", a: "First I check the data itself: has the volume of ratings collected also dropped (a smaller, noisier sample can swing an average without anything changing operationally), did a new property or room class open in that city and skew the mix, and did the survey or collection method change around the same date. Only once the numbers are confirmed clean do I treat it as real — then I'd slice by property, room class and stay length to see if the drop is concentrated (one property, one team) or spread across the whole city, and cross-check against cancellation and complaint volume for the same period before escalating to Ops.", signal: "Tests whether you verify data integrity before jumping to a service-quality conclusion." },
 
   // ---------------- General & HR ----------------
   { cat: "General & HR", q: "What was your biggest challenge on this project, and how did you solve it?", a: "Pick something concrete — e.g. discovering the composite join key between fact_bookings and fact_aggregated_bookings needed all three columns (property_id, check_in_date, room_category), not just two, and how a partial join was silently inflating Occupancy % before you caught it. Say what broke, how you diagnosed it, and what you changed.", signal: "Tests whether your challenge story is specific enough to be believable." },
@@ -908,6 +945,7 @@ const TIPS = [
   { n: "06", h: "Have one specific, honest challenge story ready", p: "Vague answers like \"the data was messy\" read as rehearsed. A specific fix — like catching that fact_aggregated_bookings needed a 3-column composite join, not 2 — reads as real experience." },
   { n: "07", h: "Contribute across every tool, not just your favorite", p: "This capstone is graded on Excel, SQL, Tableau, Power BI and QA together. In interviews, breadth across the stack signals you can work wherever a team needs you." },
   { n: "08", h: "Practice explaining a dashboard to a non-technical stakeholder", p: "Being asked to \"explain this to someone who's never seen a BI tool\" is one of the most common on-the-spot tests — rehearse it out loud before the interview." },
+  { n: "09", h: "Structure every scenario answer the same way", p: "When a stakeholder hands you a messy problem (a GM's revenue question, a spike in cancellations, a data mismatch), structure your answer as: Clarify the exact scope → Diagnose with data → Quantify the impact → Recommend one clear next step. Interviewers are grading the structure as much as the content." },
 ];
 
 const TIP_CALLOUT = "Cracking a data analyst or BI interview isn't about reciting definitions — it's about showing how you think, communicate, and handle messiness: two fact tables at different grains, a formula with a hidden business rule (Friday counts as weekend), a stakeholder who wants the occupancy number yesterday. Every question in the Interview Prep tab is really testing one of those things.";
@@ -1167,6 +1205,15 @@ function renderModel() {
   document.getElementById("load-order").innerHTML = LOAD_ORDER.map(x => `<div style="padding:5px 0;">${x}</div>`).join("");
   document.getElementById("null-notes").innerHTML = NULL_NOTES.map(x => `<div style="padding:5px 0;">${x}</div>`).join("");
   document.getElementById("calc-fields").innerHTML = CALC_FIELDS.map(x => `<div style="padding:5px 0;">${x}</div>`).join("");
+  const gotchaWrap = document.getElementById("gotchas-list");
+  if (gotchaWrap) {
+    gotchaWrap.innerHTML = GOTCHAS.map(g => `
+      <div class="gotcha-card">
+        <div class="gotcha-title">⚠️ ${g.t}</div>
+        <div class="gotcha-desc">${g.d}</div>
+      </div>
+    `).join("");
+  }
 
   const gf = document.getElementById("global-filters");
   if (gf) {
@@ -1503,6 +1550,7 @@ function buildChatIndex() {
       title: k.name,
       text: `${k.name} ${k.desc} ${k.formula} ${k.table} ${k.cat}`,
       answer: `<strong>${k.name}</strong> (${k.cat}) — ${k.desc}<br><span class="src-tag">${k.formula}</span>`,
+      followups: ["How is it different from ADR?", "Show related SQL question", "Which table does this come from?"],
     });
   });
   QA.forEach(item => {
@@ -1510,7 +1558,10 @@ function buildChatIndex() {
       type: "Interview Q&A", tab: "interview",
       title: item.q,
       text: `${item.q} ${item.a} ${item.cat}`,
-      answer: `<strong>${item.q}</strong><br>${item.a}`,
+      answer: `<strong>${item.q}</strong><br>${item.a}<div class="chat-signal">Interviewer signal: ${item.signal}</div>`,
+      followups: item.cat === "Scenario-Based"
+        ? ["Give me another scenario question", "What's a common gotcha here?"]
+        : ["Give me a scenario question on this", "What's a common mistake here?"],
     });
   });
   GLOSSARY.forEach(g => {
@@ -1519,6 +1570,34 @@ function buildChatIndex() {
       title: g.t,
       text: `${g.t} ${g.d}`,
       answer: `<strong>${g.t}</strong> — ${g.d}`,
+      followups: ["Show the related KPI", "Any gotchas here?"],
+    });
+  });
+  NULL_NOTES.forEach((n, i) => {
+    idx.push({
+      type: "Data Model", tab: "model",
+      title: `Data Model note ${i + 1}`,
+      text: `null notes expected nulls quirks data quality ${n}`,
+      answer: `<strong>Data Model — expected null / quirk</strong><br>${n}`,
+      followups: ["What are the other data model gotchas?", "Open the Data Model tab"],
+    });
+  });
+  GOTCHAS.forEach(g => {
+    idx.push({
+      type: "Gotcha", tab: "model",
+      title: g.t,
+      text: `gotcha trap mistake ${g.t} ${g.d}`,
+      answer: `<strong>⚠️ Gotcha — ${g.t}</strong><br>${g.d}`,
+      followups: ["What's another gotcha?", "Give me an interview question on this"],
+    });
+  });
+  TIPS.forEach(t => {
+    idx.push({
+      type: "Student Tip", tab: "tips",
+      title: t.h,
+      text: `tip advice ${t.h} ${t.p}`,
+      answer: `<strong>Tip — ${t.h}</strong><br>${t.p}`,
+      followups: ["Give me another tip", "Open Student Tips"],
     });
   });
   return idx;
@@ -1526,13 +1605,62 @@ function buildChatIndex() {
 
 const STOPWORDS = new Set(["what","is","the","a","an","of","for","how","why","does","do","in","on","to","and","or","this","that","are","was","were","be","it","its","with","vs","versus","between","me","tell","explain","about"]);
 
+// Synonym map — student phrasing → the terms actually used in the site's data.
+const SYNONYMS = {
+  "cancel": ["cancellation", "cancelled", "canceled"],
+  "cancelled": ["cancellation", "cancel"],
+  "noshow": ["no show", "no-show"],
+  "revenue": ["revenue_realized", "revenue_generated"],
+  "occupancy": ["occupied", "occ"],
+  "join": ["composite key", "relationship", "grain"],
+  "grain": ["composite key", "join"],
+  "weekend": ["day_type", "friday", "saturday"],
+  "dax": ["measure", "calculated column", "power bi"],
+  "sql": ["query", "select"],
+  "star schema": ["fact table", "dimension table", "data model"],
+  "trap": ["gotcha", "mistake", "trick"],
+  "mistake": ["gotcha", "trap"],
+  "rate": ["adr", "pricing"],
+  "room nights": ["stay_duration", "length of stay", "los"],
+  "los": ["length of stay", "stay_duration", "room nights"],
+  "rls": ["row level security"],
+  "gop": ["profit", "gross operating profit"],
+  "profit": ["gop", "gross operating profit"],
+};
+
+function expandTokens(tokens) {
+  const extra = [];
+  tokens.forEach(t => { if (SYNONYMS[t]) extra.push(...SYNONYMS[t]); });
+  return tokens.concat(extra.map(s => s.toLowerCase()));
+}
+
 function tokenize(s) {
   return s.toLowerCase().replace(/[^a-z0-9%\s]/g, " ").split(/\s+/).filter(w => w && !STOPWORDS.has(w));
 }
 
+// Hard intent rules — fire before the generic keyword search, for the
+// handful of questions students ask constantly and phrase very differently.
+const INTENT_RULES = [
+  { re: /revpar|revenue per available/i, title: "RevPAR (Revenue Per Available Room)" },
+  { re: /\badr\b|average daily rate/i, title: "ADR (Average Daily Rate)" },
+  { re: /two fact|why two|second fact table/i, title: "Why does this dataset include both fact_bookings and a separate fact_aggregated_bookings table — isn't that redundant?" },
+  { re: /weekend|day_type|friday.*saturday/i, title: "Friday + Saturday = \"Weekend\"" },
+  { re: /scenario|gm (said|calls)|stakeholder/i, title: "The GM of Shodwe Grands Delhi calls you at 9 AM. \"Occupancy last week was 92% but my revenue is lower than the week when occupancy was only 78%. Explain this to me in simple terms and show me the numbers.\"" },
+  { re: /composite key|three.column|3.column join/i, title: "Composite key" },
+  { re: /adr.*room night|room night.*adr|adr definition|true adr/i, title: "ADR: bookings vs room nights — the classic trap" },
+  { re: /occupancy.*realisation|realisation.*occupancy/i, title: "What's the difference between Occupancy % and Realisation %? They sound similar." },
+];
+
+function findByExactTitle(title, index) {
+  return index.find(e => e.title === title);
+}
+
 function searchChatIndex(query, index) {
-  const qTokens = tokenize(query);
-  if (!qTokens.length) return [];
+  const qTokensRaw = tokenize(query);
+  if (!qTokensRaw.length) return [];
+  const qTokens = expandTokens(qTokensRaw);
+  const queryLower = query.toLowerCase();
+
   const scored = index.map(entry => {
     const textLower = entry.text.toLowerCase();
     const titleLower = entry.title.toLowerCase();
@@ -1541,13 +1669,17 @@ function searchChatIndex(query, index) {
       if (titleLower.includes(tok)) score += 3;
       else if (textLower.includes(tok)) score += 1;
     });
+    // Exact-phrase bonus: reward entries where the whole query (3+ chars) appears verbatim
+    if (queryLower.length > 3 && titleLower.includes(queryLower)) score += 5;
     return { entry, score };
   }).filter(r => r.score > 0);
   scored.sort((a, b) => b.score - a.score);
-  return scored.slice(0, 2).map(r => r.entry);
+  return scored.slice(0, 3).map(r => r.entry);
 }
 
 let chatIndexCache = null;
+let chatHistory = []; // last few user turns, for lightweight "why?" / "give an example" follow-ups
+let chatLastResults = [];
 
 function chatAppendMessage(html, who) {
   const body = document.getElementById("chat-panel-body");
@@ -1555,22 +1687,111 @@ function chatAppendMessage(html, who) {
   row.innerHTML = `<div class="chat-bubble">${html}</div>`;
   body.appendChild(row);
   body.scrollTop = body.scrollHeight;
+  return row;
+}
+
+function chatAppendFollowups(followups, body) {
+  if (!followups || !followups.length) return;
+  const wrap = el("div", "chat-followups");
+  followups.slice(0, 3).forEach(f => {
+    const chip = el("button", "chat-followup-chip", f);
+    chip.type = "button";
+    chip.addEventListener("click", () => {
+      chatAppendMessage(f.replace(/</g, "&lt;"), "user");
+      setTimeout(() => chatAnswer(f), 150);
+    });
+    wrap.appendChild(chip);
+  });
+  body.appendChild(wrap);
+  body.scrollTop = body.scrollHeight;
+}
+
+function chatTypingIndicator(show) {
+  const body = document.getElementById("chat-panel-body");
+  let indEl = document.getElementById("chat-typing-indicator");
+  if (show) {
+    if (indEl) return;
+    indEl = el("div", "chat-msg bot");
+    indEl.id = "chat-typing-indicator";
+    indEl.innerHTML = `<div class="chat-bubble chat-typing"><span></span><span></span><span></span></div>`;
+    body.appendChild(indEl);
+    body.scrollTop = body.scrollHeight;
+  } else if (indEl) {
+    indEl.remove();
+  }
+}
+
+const CHAT_POPULAR = [
+  "What is RevPAR?",
+  "Why does this dataset have two fact tables?",
+  "Occupancy vs Realisation — what's the difference?",
+  "Is ADR really Revenue / Bookings?",
+  "Give me a scenario-based question",
+];
+
+function chatFallback() {
+  const suggestions = CHAT_POPULAR.map(q =>
+    `<button type="button" class="chat-followup-chip" data-suggest="${q.replace(/"/g, '&quot;')}">${q}</button>`
+  ).join("");
+  const body = chatAppendMessage(
+    `I couldn't find a close match for that in the KPI list, interview prep, data model or glossary. Try a specific term — e.g. a KPI name, a table name, or one of these:`,
+    "bot"
+  );
+  const wrap = el("div", "chat-followups");
+  wrap.innerHTML = suggestions;
+  wrap.querySelectorAll("[data-suggest]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const q = btn.getAttribute("data-suggest");
+      chatAppendMessage(q.replace(/</g, "&lt;"), "user");
+      setTimeout(() => chatAnswer(q), 150);
+    });
+  });
+  const container = document.getElementById("chat-panel-body");
+  container.appendChild(wrap);
+  container.scrollTop = container.scrollHeight;
 }
 
 function chatAnswer(query) {
   if (!chatIndexCache) chatIndexCache = buildChatIndex();
-  const results = searchChatIndex(query, chatIndexCache);
+
+  // Very short follow-ups ("why?", "example?") lean on the last thing discussed.
+  const bare = query.trim().toLowerCase().replace(/[?!.]/g, "");
+  if ((bare === "why" || bare === "example" || bare === "give an example" || bare === "more") && chatLastResults.length) {
+    query = chatLastResults[0].title;
+  }
+
+  chatHistory.push(query);
+  if (chatHistory.length > 3) chatHistory.shift();
+
+  // Hard intent rules fire first for the highest-traffic questions.
+  let forced = null;
+  for (const rule of INTENT_RULES) {
+    if (rule.re.test(query)) {
+      forced = findByExactTitle(rule.title, chatIndexCache);
+      if (forced) break;
+    }
+  }
+
+  const results = forced ? [forced] : searchChatIndex(query, chatIndexCache);
+
   if (!results.length) {
-    chatAppendMessage(
-      `I couldn't find a close match for that in the KPI list, interview prep or glossary. Try rephrasing with a specific term — e.g. a KPI name, a table name, or a keyword like "occupancy" or "cancellation".`,
-      "bot"
-    );
+    chatFallback();
     return;
   }
+
+  chatLastResults = results;
+  const tabLabel = { kpis: "KPI List", interview: "Interview Prep", glossary: "Glossary", model: "Data Model", tips: "Student Tips" };
   results.forEach((r) => {
-    const tabLabel = { kpis: "KPI List", interview: "Interview Prep", glossary: "Glossary" }[r.tab];
-    const linkBtn = `<br><button type="button" class="chat-link-btn" onclick="switchView('${r.tab}')">Open ${tabLabel} tab →</button>`;
-    chatAppendMessage(r.answer + linkBtn, "bot");
+    const linkBtn = `<br><button type="button" class="chat-link-btn" onclick="switchView('${r.tab}')">Open ${tabLabel[r.tab] || r.tab} tab →</button>`;
+    const copyBtn = `<button type="button" class="chat-copy-btn" title="Copy answer">Copy</button>`;
+    const bubbleId = "chat-a-" + Math.random().toString(36).slice(2, 9);
+    const body = chatAppendMessage(`<div id="${bubbleId}">${r.answer}</div>${linkBtn}${copyBtn}`, "bot");
+    const cBtn = body.querySelector(".chat-copy-btn");
+    cBtn.addEventListener("click", () => {
+      const text = document.getElementById(bubbleId).innerText;
+      navigator.clipboard.writeText(text).then(() => { cBtn.textContent = "Copied ✓"; setTimeout(() => cBtn.textContent = "Copy", 1500); }).catch(() => {});
+    });
+    chatAppendFollowups(r.followups, document.getElementById("chat-panel-body"));
   });
 }
 
@@ -1601,7 +1822,11 @@ function initChatWidget() {
     if (!q) return;
     chatAppendMessage(q.replace(/</g, "&lt;"), "user");
     input.value = "";
-    setTimeout(() => chatAnswer(q), 150);
+    chatTypingIndicator(true);
+    setTimeout(() => {
+      chatTypingIndicator(false);
+      chatAnswer(q);
+    }, 450);
   });
 }
 

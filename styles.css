@@ -485,6 +485,30 @@ section.view.active { display: block; animation: fadeIn 0.25s ease; }
 }
 @media (max-width: 900px) { .model-grid { grid-template-columns: 1fr; } }
 
+.gotchas-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+@media (max-width: 700px) { .gotchas-grid { grid-template-columns: 1fr; } }
+.gotcha-card {
+  background: var(--amber-tint);
+  border: 1px solid var(--amber);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+}
+.gotcha-title {
+  font-weight: 600;
+  font-size: 13.5px;
+  color: var(--amber);
+  margin-bottom: 6px;
+}
+.gotcha-desc {
+  font-size: 12.5px;
+  color: var(--ink-muted);
+  line-height: 1.5;
+}
+
 .schema {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -639,6 +663,18 @@ section.view.active { display: block; animation: fadeIn 0.25s ease; }
 }
 .qa-a-inner p { margin: 0 0 10px; }
 .qa-a-inner p:last-child { margin-bottom: 0; }
+.qa-a-inner code {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.6;
+  background: var(--ink);
+  color: #E3F5F3;
+  padding: 10px 12px;
+  border-radius: 6px;
+  margin: 4px 0;
+  white-space: pre-wrap;
+}
 .qa-a-inner .signal {
   margin-top: 10px;
   font-size: 12px;
@@ -1059,6 +1095,59 @@ footer {
   font-family: var(--body);
 }
 .chat-link-btn:hover { background: var(--teal); color: #fff; }
+
+.chat-copy-btn {
+  display: inline-block;
+  margin-top: 8px;
+  margin-left: 6px;
+  padding: 5px 11px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  border: 1px solid var(--line);
+  background: var(--paper-raised);
+  color: var(--ink-muted);
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: var(--body);
+}
+.chat-copy-btn:hover { border-color: var(--teal); color: var(--teal-deep); }
+
+.chat-bubble .chat-signal {
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--ink-muted);
+  font-style: italic;
+}
+
+.chat-followups {
+  display: flex; flex-wrap: wrap; gap: 6px; padding: 0 4px 2px 4px;
+}
+.chat-followup-chip {
+  font-family: var(--body);
+  font-size: 11.5px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  border: 1px solid var(--teal);
+  background: var(--teal-tint);
+  color: var(--teal-deep);
+  cursor: pointer;
+  font-weight: 500;
+}
+.chat-followup-chip:hover { background: var(--teal); color: #fff; }
+
+.chat-typing { display: flex; align-items: center; gap: 4px; padding: 12px 14px; }
+.chat-typing span {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--ink-muted); display: inline-block;
+  animation: chatTypingBounce 1.2s infinite ease-in-out;
+}
+.chat-typing span:nth-child(2) { animation-delay: 0.15s; }
+.chat-typing span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes chatTypingBounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
 
 @media (max-width: 480px) {
   .chat-panel { right: 12px; left: 12px; width: auto; bottom: 88px; }
