@@ -22,7 +22,7 @@
 
     <div class="sidebar-progress">
       <div class="progress-track"><div class="progress-fill" id="sidebar-progress-fill"></div></div>
-      <div class="progress-caption" id="sidebar-progress-caption">0% complete · 0/61 questions reviewed</div>
+      <div class="progress-caption" id="sidebar-progress-caption">0% complete · 0/63 questions reviewed</div>
     </div>
     <div class="streak-badge" id="streak-badge"></div>
 
@@ -55,6 +55,7 @@
 <!-- ===================== OVERVIEW ===================== -->
 <section class="view active" id="view-overview">
   <div class="wrap">
+    <div id="continue-banner" class="continue-banner" style="display:none;"></div>
     <div class="hero">
       <div class="hero-pattern" aria-hidden="true"></div>
       <div class="hero-grid">
@@ -70,10 +71,10 @@
           </div>
           <div class="hero-cta">
             <button class="btn-dark" data-goto="kpis">Start with the KPI List</button>
-            <a class="btn-yellow" href="https://crackanalytics-mahendra-2026.vercel.app/" target="_blank" rel="noopener">Interview Preparation ↗</a>
+            <a class="btn-yellow" href="https://www.crackanalytics.com/" target="_blank" rel="noopener">Interview Preparation ↗</a>
           </div>
           <div class="callout-yellow">
-            <strong>How to use this site:</strong> Follow the tabs in the sidebar. Know your KPI List and Data Model cold first (that's where most students fumble in QA — especially the two-fact-table composite join), then work through Interview Prep by category. For a much deeper interview-question bank across SQL, Power BI, Tableau, Excel and more, <a href="https://crackanalytics-mahendra-2026.vercel.app/" target="_blank" rel="noopener">CrackAnalytics</a> is Mahendra's dedicated free prep course.
+            <strong>How to use this site:</strong> Follow the tabs in the sidebar. Know your KPI List and Data Model cold first (that's where most students fumble in QA — especially the two-fact-table composite join), then work through Interview Prep by category. For a much deeper interview-question bank across SQL, Power BI, Tableau, Excel and more, <a href="https://www.crackanalytics.com/" target="_blank" rel="noopener">CrackAnalytics</a> is Mahendra's dedicated free prep course.
           </div>
           <div class="stat-strip" id="stat-strip"></div>
         </div>
@@ -436,7 +437,7 @@
       <div class="ca-text">
         <strong>Want the full interview-prep library?</strong> This tab covers the project-specific questions. For 450+ real SQL, Power BI, Tableau, Excel and Data Science questions with full answers — organized by difficulty — head to <strong>CrackAnalytics</strong>, Mahendra's dedicated free prep course.
       </div>
-      <a class="btn-dark" href="https://crackanalytics-mahendra-2026.vercel.app/" target="_blank" rel="noopener">Open CrackAnalytics ↗</a>
+      <a class="btn-dark" href="https://www.crackanalytics.com/" target="_blank" rel="noopener">Open CrackAnalytics ↗</a>
     </div>
     <div class="progress-label"><span>Your progress</span><span id="progress-text">0 / 0 reviewed</span></div>
     <div class="progress-bar-outer"><div class="progress-bar-inner" id="progress-bar" style="width:0%;"></div></div>
@@ -479,6 +480,13 @@
       <h4>The one habit that separates candidates</h4>
       <p id="tip-callout"></p>
     </div>
+
+    <div class="section-head mt-40">
+      <div class="eyebrow">Weak vs Strong</div>
+      <h2>See the difference a stronger answer makes</h2>
+      <p>Same question, two answers. The weak version isn't wrong — it's just thin. The strong version is what actually separates candidates.</p>
+    </div>
+    <div id="weak-strong-list"></div>
 
     <div class="callout mt-40" style="text-align:center;">
       <h4>Ready for the real thing?</h4>

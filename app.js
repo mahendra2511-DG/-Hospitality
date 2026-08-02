@@ -15,8 +15,9 @@ const KPIS = [
   },
   {
     "name": "ADR (Average Daily Rate)",
-    "desc": "Average amount paid per room booked — the standard hospitality yardstick for pricing performance. Note: this project's metrics register defines the denominator as Total Bookings, a simplification — the true industry-standard denominator is Room Nights (stay_duration summed), which differs whenever average length of stay exceeds one night.",
+    "desc": "Average amount paid per room booked — the standard hospitality yardstick for pricing performance.",
     "formula": "DIVIDE([Revenue], [Total Bookings], 0)",
+    "note": "Project definition. Industry standard uses Room Nights instead of Bookings.",
     "table": "fact_bookings",
     "cat": "Revenue",
     "prio": "P1"
@@ -808,7 +809,7 @@ const SOCIAL = {
   youtube: "https://www.youtube.com/channel/UC2q-vZWSlQpiGiMcSLUqnIg",
 };
 
-const CRACKANALYTICS_URL = "https://crackanalytics-mahendra-2026.vercel.app/";
+const CRACKANALYTICS_URL = "https://www.crackanalytics.com/";
 
 
 /* ---------------- SETUP & SOFTWARE DOWNLOADS ---------------- */
@@ -844,6 +845,8 @@ const QA = [
   { cat: "SQL", q: "How would you correctly calculate room nights / length of stay from check_in and check_out dates?", a: "Room nights = DATEDIFF(day, check_in_date, checkout_date). Never use booking count when the stay can be longer than one night. In this dataset stay_duration is already provided, but if it were missing I would compute it with DATEDIFF and then guard against negative or zero values. ADR and many other metrics become wrong if you treat every booking as one room night.", signal: "Fundamental hospitality SQL skill — most juniors get this wrong." },
   { cat: "SQL", q: "Write a query for cancellation rate by booking_platform and city.", a: "<code>SELECT h.city, b.booking_platform,<br>&nbsp;&nbsp;COUNT(*) AS total_bookings,<br>&nbsp;&nbsp;SUM(CASE WHEN b.booking_status = 'Cancelled' THEN 1 ELSE 0 END) AS cancelled,<br>&nbsp;&nbsp;ROUND(100.0 * SUM(CASE WHEN b.booking_status = 'Cancelled' THEN 1 ELSE 0 END) / COUNT(*), 1) AS cancel_pct<br>FROM fact_bookings b<br>JOIN dim_hotels h ON b.property_id = h.property_id<br>GROUP BY h.city, b.booking_platform<br>ORDER BY cancel_pct DESC;</code><br>This is the exact view commercial teams use to decide which channels to tighten.", signal: "Practical multi-table aggregation + business framing." },
   { cat: "SQL", q: "How do you handle the fact that ratings_given is null on roughly 58% of rows?", a: "I treat it as expected, not broken — cancelled and no-show guests never left a rating, so those rows have nothing to report. In SQL, AVG(ratings_given) already ignores NULLs automatically, so a plain <code>SELECT AVG(ratings_given) FROM fact_bookings WHERE booking_status = 'Checked Out'</code> is correct as-is. The trap is using COALESCE(ratings_given, 0) or a similar fallback — that would silently drag the average down by treating \"never asked\" the same as \"rated zero.\"", signal: "Tests whether a candidate distinguishes an expected null from a data-quality defect, and knows AVG() already handles it correctly." },
+  { cat: "SQL", q: "How would you QA / reconcile Occupancy % between fact_aggregated_bookings and the final dashboard?", a: "I run the same aggregation twice, from two different starting points, and expect them to match: <code>SELECT SUM(successful_bookings) * 100.0 / SUM(capacity) FROM fact_aggregated_bookings</code> against the dashboard's own Occupancy % visual with no filters applied. If they don't tie out, the usual causes are: the dashboard visual is implicitly filtered (e.g. only 'Checked Out' status, or a default date range), the DAX measure divides by a different denominator than SUM(capacity), or a broken composite join is fanning out rows. I reconcile at the whole-dataset level first, then narrow by property and month until I isolate exactly where the numbers diverge — never adjust the dashboard number to match without finding the actual cause.", signal: "Tests a real QA habit — reconciling from source, then narrowing — rather than assuming the dashboard is automatically correct." },
+  { cat: "SQL", q: "Walk me through a booking lead-time analysis — what would you look for?", a: "Lead time = check_in_date − booking_date, bucketed into ranges like 0–3, 4–7, 8–14, 15–30 and 31+ days. I'd cross-tab those buckets against cancellation rate, ADR and channel — because short lead times (0–3 days) usually carry both higher cancellation risk and different pricing behaviour than bookings made a month out. I'd also break it out by city and by room class, since a luxury property's lead-time distribution can look very different from a business property's. The output is usually a simple recommendation: which lead-time bucket needs a tighter cancellation policy or a different rate strategy.", signal: "Tests whether the candidate can turn a single derived field (lead time) into a genuinely actionable segmentation, not just a chart." },
 
   // ---------------- Power BI & DAX ----------------
   { cat: "Power BI & DAX", q: "Walk me through building the Occupancy % measure in DAX, exactly as this project's metrics register defines it.", a: "Occupancy % = DIVIDE([Total Successful Bookings], [Total Capacity], 0) — where Total Successful Bookings = SUM(fact_aggregated_bookings[successful_bookings]) and Total Capacity = SUM(fact_aggregated_bookings[capacity]). Using DIVIDE with a 0 fallback avoids a divide-by-zero error when a filtered slice (e.g. one property, one day) has zero capacity rows.", signal: "Tests whether you know the exact DAX pattern from the project's own register, including the safe-division fallback." },
@@ -1164,6 +1167,7 @@ function renderKpiGrid() {
       </div>
       <p style="font-size:12.5px;color:var(--ink-muted);margin:0;">${k.desc}</p>
       <div class="formula">${k.formula}</div>
+      ${k.note ? `<div class="kpi-note">⚠️ ${k.note}</div>` : ""}
       <div class="meta"><span>${k.table}</span><span>${k.cat}</span></div>
     `;
     wrap.appendChild(c);
@@ -1349,6 +1353,7 @@ function renderQaList() {
     const id = item.cat + "::" + item.q;
     const done = !!progress[id];
     const starred = !!bookmarks.qa[item.q];
+    const isLong = item.a.length > 480;
     const card = el("div", "qa-item");
     card.id = "qa-" + slugify(item.q);
     card.innerHTML = `
@@ -1360,7 +1365,8 @@ function renderQaList() {
         <span class="chev">⌄</span>
       </div>
       <div class="qa-a"><div class="qa-a-inner">
-        <p>${item.a}</p>
+        <div class="answer-text ${isLong ? 'clamped' : ''}"><p>${item.a}</p></div>
+        ${isLong ? '<button type="button" class="show-full-btn">Show full answer ▾</button>' : ''}
         <div class="signal">Interviewer signal: ${item.signal}</div>
         <button class="mark-btn ${done ? 'done' : ''}" style="margin-top:12px;">${done ? '✓ Reviewed' : 'Mark reviewed'}</button>
       </div></div>
@@ -1372,6 +1378,16 @@ function renderQaList() {
       const isOpen = card.classList.toggle("open");
       aDiv.style.maxHeight = isOpen ? aDiv.scrollHeight + "px" : "0px";
     });
+    const showFullBtn = card.querySelector(".show-full-btn");
+    if (showFullBtn) {
+      showFullBtn.addEventListener("click", (ev) => {
+        ev.stopPropagation();
+        const textDiv = card.querySelector(".answer-text");
+        const nowClamped = textDiv.classList.toggle("clamped");
+        showFullBtn.textContent = nowClamped ? "Show full answer ▾" : "Show less ▴";
+        if (card.classList.contains("open")) aDiv.style.maxHeight = aDiv.scrollHeight + "px";
+      });
+    }
     const markBtn = card.querySelector(".mark-btn");
     markBtn.addEventListener("click", (ev) => {
       ev.stopPropagation();
@@ -1429,6 +1445,38 @@ function renderGlossary(filterText) {
   });
 }
 
+const WEAK_STRONG = [
+  {
+    q: "What is RevPAR?",
+    weak: "RevPAR is revenue per available room. It's revenue divided by the number of rooms.",
+    strong: "RevPAR (Revenue Per Available Room) is revenue divided by total available rooms — occupied or not — which is why it's always ≤ ADR. It answers a different question than ADR: not \"how much did we charge for rooms we sold,\" but \"how much did every room in the building earn us, whether it sold or sat empty.\" A hotel with high rates but low occupancy can lose to a hotel with lower rates but full rooms once you look at RevPAR instead of ADR alone.",
+  },
+  {
+    q: "Why does ADR use Total Bookings as its denominator, but RevPAR uses Total Capacity?",
+    weak: "ADR is revenue divided by bookings and RevPAR is revenue divided by capacity, so they're just different formulas.",
+    strong: "They answer different questions. ADR asks 'how much did we charge for the rooms we actually sold?' so the clean denominator is sold room nights. RevPAR asks 'how much revenue did every available room generate, sold or not?' so the denominator is total capacity. In this project the metrics register defines ADR as Revenue ÷ Total Bookings — that's a simplification; the industry standard is Revenue ÷ Room Nights. I'd always state which definition the dashboard is using so the GM isn't comparing our number to an external STR report on a different basis.",
+  },
+  {
+    q: "How did you connect SQL to Tableau and Power BI in this project?",
+    weak: "I just added a new data source in each tool, typed in the server details, and connected to the database.",
+    strong: "We never pointed Tableau or Power BI at the raw Excel files. The five source tables were loaded into MySQL, cleaned, and exposed through a single governed mart view — vw_hotel_booking_analysis. Both BI tools connect only to that view. This gives one source of truth and makes QA simple: the same SQL that feeds the dashboard is what we run to reconcile every number, instead of two tools potentially drifting from two separate data pulls.",
+  },
+];
+
+function renderWeakStrong() {
+  const wrap = document.getElementById("weak-strong-list");
+  if (!wrap) return;
+  wrap.innerHTML = WEAK_STRONG.map(ws => `
+    <div class="ws-card">
+      <div class="ws-q">${ws.q}</div>
+      <div class="ws-grid">
+        <div class="ws-col ws-weak"><div class="ws-label">✗ Weak answer</div><p>${ws.weak}</p></div>
+        <div class="ws-col ws-strong"><div class="ws-label">✓ Strong answer</div><p>${ws.strong}</p></div>
+      </div>
+    </div>
+  `).join("");
+}
+
 function renderTips() {
   const wrap = document.getElementById("tip-grid");
   TIPS.forEach(t => {
@@ -1437,9 +1485,16 @@ function renderTips() {
     wrap.appendChild(c);
   });
   document.getElementById("tip-callout").textContent = TIP_CALLOUT;
+  renderWeakStrong();
 }
 
 /* ---- Nav (sidebar) ---- */
+const LAST_VIEW_KEY = "shodwe_last_view_v1";
+const VIEW_LABELS = {
+  rules: "Rules & Regulations", kpis: "KPI List", model: "Data Model", datadict: "Data Dictionary",
+  dashboards: "Sample Dashboards", sql: "SQL & QA Lab", interview: "Interview Prep", glossary: "Glossary", tips: "Student Tips",
+};
+
 function switchView(viewName) {
   document.querySelectorAll("#nav button").forEach(x => x.classList.remove("active"));
   const target = document.querySelector(`#nav button[data-view="${viewName}"]`);
@@ -1449,6 +1504,28 @@ function switchView(viewName) {
   if (section) section.classList.add("active");
   window.scrollTo({ top: 0, behavior: "auto" });
   closeMobileSidebar();
+  if (viewName !== "overview" && VIEW_LABELS[viewName]) {
+    try { localStorage.setItem(LAST_VIEW_KEY, JSON.stringify({ view: viewName, ts: Date.now() })); } catch (e) {}
+  }
+  if (viewName === "overview") renderContinueBanner();
+}
+
+function renderContinueBanner() {
+  const wrap = document.getElementById("continue-banner");
+  if (!wrap) return;
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem(LAST_VIEW_KEY)); } catch (e) {}
+  if (!saved || !saved.view || !VIEW_LABELS[saved.view]) { wrap.style.display = "none"; return; }
+  wrap.style.display = "flex";
+  wrap.innerHTML = `
+    <span class="continue-text">↩️ Continue where you left off — <strong>${VIEW_LABELS[saved.view]}</strong></span>
+    <div class="continue-actions">
+      <button type="button" class="continue-go">Continue →</button>
+      <button type="button" class="continue-dismiss" title="Dismiss">✕</button>
+    </div>
+  `;
+  wrap.querySelector(".continue-go").addEventListener("click", () => switchView(saved.view));
+  wrap.querySelector(".continue-dismiss").addEventListener("click", () => { wrap.style.display = "none"; });
 }
 
 function initNav() {
@@ -1649,6 +1726,7 @@ const INTENT_RULES = [
   { re: /composite key|three.column|3.column join/i, title: "Composite key" },
   { re: /adr.*room night|room night.*adr|adr definition|true adr/i, title: "ADR: bookings vs room nights — the classic trap" },
   { re: /occupancy.*realisation|realisation.*occupancy/i, title: "What's the difference between Occupancy % and Realisation %? They sound similar." },
+  { re: /ratings?_?given|ratings? null|58%.*rating|rating.*null/i, title: "How do you handle the fact that ratings_given is null on roughly 58% of rows?" },
 ];
 
 function findByExactTitle(title, index) {
@@ -1726,6 +1804,7 @@ const CHAT_POPULAR = [
   "Why does this dataset have two fact tables?",
   "Occupancy vs Realisation — what's the difference?",
   "Is ADR really Revenue / Bookings?",
+  "Why is ratings_given null on so many rows?",
   "Give me a scenario-based question",
 ];
 
@@ -1809,6 +1888,7 @@ function initChatWidget() {
     if (panel.classList.contains("open")) {
       input.focus();
       if (label) label.classList.add("hide");
+      renderQuickReplies();
     }
   });
   closeBtn.addEventListener("click", () => {
@@ -2188,16 +2268,23 @@ function initCmdk() {
 /* ============================================================
    Chat quick-reply chips
    ============================================================ */
-const QUICK_REPLIES = [
+const QUICK_REPLY_POOL = [
   "What is RevPAR?",
   "Why two fact tables?",
   "Occupancy vs Realisation?",
   "Explain the day_type rule",
+  "Is ADR really Revenue / Bookings?",
+  "Why is ratings_given null?",
+  "Give me a scenario question",
+  "What's a common gotcha here?",
+  "Room nights vs bookings?",
+  "How do I QA the Occupancy number?",
 ];
 function renderQuickReplies() {
   const wrap = document.getElementById("chat-quick-replies");
   if (!wrap) return;
-  wrap.innerHTML = QUICK_REPLIES.map(q => `<button type="button" data-quick="${q.replace(/"/g,'&quot;')}">${q}</button>`).join("");
+  const shuffled = [...QUICK_REPLY_POOL].sort(() => Math.random() - 0.5).slice(0, 5);
+  wrap.innerHTML = shuffled.map(q => `<button type="button" data-quick="${q.replace(/"/g,'&quot;')}">${q}</button>`).join("");
   wrap.querySelectorAll("button").forEach(btn => {
     btn.addEventListener("click", () => {
       const input = document.getElementById("chat-input");
@@ -2270,6 +2357,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initStarredToggles();
   initCmdk();
   initCheatSheet();
+  renderContinueBanner();
   handleDeepLink();
   window.addEventListener("hashchange", handleDeepLink);
 });
