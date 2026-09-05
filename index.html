@@ -135,7 +135,7 @@
       <p>The full path data actually travels: booking and occupancy exports get loaded and cleaned, transformed into the analytics warehouse, and both BI tools connect only to the warehouse — never to each other, never to the raw export directly.</p>
     </div>
     <div class="pipeline-card-dark">
-      <svg class="pipeline-svg" viewBox="0 0 1080 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animated data pipeline: hospitality booking data writes to a source database, ETL extracts it into a data warehouse, and Tableau and Power BI connect to that warehouse">
+      <svg class="pipeline-svg" viewBox="0 0 1080 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animated data pipeline: hospitality booking data writes to a source database, ETL extracts it into a data warehouse, and Tableau, Power BI, and an AI/insights layer all connect to that warehouse">
         <defs>
           <marker id="arrow2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
             <path d="M0,0 L6,3 L0,6 Z" fill="#4A535E"/>
@@ -148,6 +148,7 @@
           <path id="p2" d="M365,145 H420" />
           <path id="p3" d="M580,145 H635" />
           <path id="p4" d="M815,145 C845,145 845,55 870,55" />
+          <path id="pAI" d="M815,145 C845,145 845,150 870,150" />
           <path id="p5" d="M815,145 C845,145 845,245 870,245" />
         </defs>
 
@@ -155,6 +156,7 @@
         <use href="#p2" stroke="#3A424B" stroke-width="2" fill="none" marker-end="url(#arrow2)"/>
         <use href="#p3" stroke="#3A424B" stroke-width="2" fill="none" marker-end="url(#arrow2)"/>
         <use href="#p4" stroke="#3A424B" stroke-width="2" fill="none" marker-end="url(#arrow2)"/>
+        <use href="#pAI" stroke="#3A424B" stroke-width="2" fill="none" marker-end="url(#arrow2)"/>
         <use href="#p5" stroke="#3A424B" stroke-width="2" fill="none" marker-end="url(#arrow2)"/>
 
         <circle r="4" fill="#7FD9BE" filter="url(#dotglow)"><animateMotion dur="1.8s" repeatCount="indefinite" begin="0s"><mpath href="#p1"/></animateMotion></circle>
@@ -167,6 +169,7 @@
         <circle r="4" fill="#0D9488" filter="url(#dotglow)"><animateMotion dur="1.6s" repeatCount="indefinite" begin="1.5s"><mpath href="#p3"/></animateMotion></circle>
 
         <circle r="4" fill="#38BDF8" filter="url(#dotglow)"><animateMotion dur="2s" repeatCount="indefinite" begin="1.05s"><mpath href="#p4"/></animateMotion></circle>
+        <circle r="4" fill="#A78BFA" filter="url(#dotglow)"><animateMotion dur="2s" repeatCount="indefinite" begin="1.2s"><mpath href="#pAI"/></animateMotion></circle>
         <circle r="4" fill="#F6C445" filter="url(#dotglow)"><animateMotion dur="2s" repeatCount="indefinite" begin="1.05s"><mpath href="#p5"/></animateMotion></circle>
 
         <g>
@@ -206,6 +209,20 @@
           <text x="955" y="73" text-anchor="middle" font-family="var(--mono)" font-size="11.5" font-weight="700" fill="#FFFFFF">Tableau</text>
         </g>
 
+        <!-- AI / Insights layer -->
+        <g>
+          <rect x="870" y="110" width="170" height="80" rx="10" fill="#221A2E" stroke="#A78BFA" stroke-width="1.75"/>
+          <line x1="955" y1="123" x2="955" y2="129" stroke="#A78BFA" stroke-width="2"/>
+          <circle cx="955" cy="120" r="3" fill="#A78BFA"/>
+          <rect x="936" y="129" width="38" height="30" rx="8" fill="none" stroke="#A78BFA" stroke-width="2"/>
+          <circle cx="946" cy="144" r="3.2" fill="#A78BFA"/>
+          <circle cx="964" cy="144" r="3.2" fill="#A78BFA"/>
+          <rect x="945" y="151" width="20" height="3" rx="1.5" fill="#A78BFA"/>
+          <line x1="931" y1="137" x2="936" y2="137" stroke="#A78BFA" stroke-width="2"/>
+          <line x1="974" y1="137" x2="979" y2="137" stroke="#A78BFA" stroke-width="2"/>
+          <text x="955" y="178" text-anchor="middle" font-family="var(--mono)" font-size="11.5" font-weight="700" fill="#FFFFFF">AI / Insights</text>
+        </g>
+
         <g>
           <rect x="870" y="205" width="170" height="80" rx="10" fill="#241F14" stroke="var(--yellow)" stroke-width="1.75"/>
           <rect x="939" y="228" width="9" height="24" fill="#F6C445"/>
@@ -214,12 +231,13 @@
           <text x="955" y="273" text-anchor="middle" font-family="var(--mono)" font-size="11.5" font-weight="700" fill="#FFFFFF">Power BI</text>
         </g>
       </svg>
-      <p class="pipeline-caption-dark">Live-flowing reference, not a literal animation of your data — but this is the real path: nothing reaches Tableau or Power BI except through the warehouse, and nothing reaches the warehouse except through ETL.</p>
+      <p class="pipeline-caption-dark">Live-flowing reference, not a literal animation of your data — but this is the real path: nothing reaches Tableau, Power BI, or the AI/insights layer except through the warehouse, and nothing reaches the warehouse except through ETL.</p>
       <div class="pipeline-legend">
         <span><i style="background:#7FD9BE"></i>Extract → ETL</span>
         <span><i style="background:#0D9488"></i>Load → Warehouse</span>
         <span><i style="background:#38BDF8"></i>Connect → Tableau</span>
         <span><i style="background:#F6C445"></i>Connect → Power BI</span>
+        <span><i style="background:#A78BFA"></i>Connect → AI / Insights</span>
       </div>
     </div>
 

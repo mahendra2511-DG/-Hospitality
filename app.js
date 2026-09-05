@@ -748,6 +748,7 @@ const TOOLS = [
   { logo: "assets/mysql-logo.png", name: "SQL", role: "Stage 2 · Load it into a database", desc: "Load the cleaned tables into SQL and build vw_hotel_booking_analysis — the pre-joined mart view that pulls hotel, date and room attributes onto every booking row." },
   { logo: "assets/tableau-logo.jpg", name: "Tableau", role: "Stage 3 · Connect to SQL, not the file", desc: "Tableau connects to SQL as its data source, not the raw Excel/CSV files, and builds the Booking & Occupancy dashboard with weekday/weekend and property-level breakdowns." },
   { logo: "assets/powerbi-logo.png", name: "Power BI", role: "Stage 4 · Connect to SQL, not the file", desc: "Power BI connects to the same SQL source, models the relationships around fact_bookings, and implements all 25 DAX measures from the metrics register — including the Week-over-Week trend measures." },
+  { logo: "assets/sia-avatar.png", name: "AI / Insights", role: "Stage 4 (optional) · Ask the warehouse a question", desc: "An optional natural-language layer on top of the same warehouse — a Copilot/Power BI Q&A visual, or a simple chatbot wired to your KPI queries — that lets a revenue manager type \"what's our occupancy this week?\" and get an answer, without a separate copy of the data." },
   { logo: "assets/mysql-logo.png", name: "QA / SQL", role: "Stage 5 · Match backend to dashboard", desc: "Run SQL directly against the mart view and reconcile every KPI — Revenue, Occupancy %, ADR, RevPAR, Cancellation % — against what Tableau and Power BI display." },
 ];
 
