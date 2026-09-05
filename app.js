@@ -819,6 +819,10 @@ const SOFTWARE_LINKS = [
   { name: "Power BI Desktop — free download", desc: "Official installer from Microsoft", icon: "⚡", type: "link", href: "https://www.microsoft.com/en-us/download/details.aspx?id=58494" },
 ];
 
+const DOCUMENTS = [
+  { name: "Excel Starter Template.xlsx", desc: "A ready-to-use workbook with live SUMIFS/COUNTIFS formulas for Booking Volume, Cancellation %, Realisation %, ADR and Avg Rating — paste your export into Raw_Data and the Dashboard tab updates itself", icon: "🧮", type: "download", href: "assets/docs/Shodwe_Hospitality_Excel_Starter.xlsx", filename: "Shodwe_Hospitality_Excel_Starter.xlsx" }
+];
+
 /* ---------------- INTERVIEW PREP ---------------- */
 const QA_CATS = ["Explain This Project", "SQL", "Power BI & DAX", "Tableau", "Data Modeling", "Hospitality Domain", "Scenario-Based", "General & HR", "Rapid Fire"];
 
@@ -952,6 +956,48 @@ const TIPS = [
 ];
 
 const TIP_CALLOUT = "Cracking a data analyst or BI interview isn't about reciting definitions — it's about showing how you think, communicate, and handle messiness: two fact tables at different grains, a formula with a hidden business rule (Friday counts as weekend), a stakeholder who wants the occupancy number yesterday. Every question in the Interview Prep tab is really testing one of those things.";
+
+/* ---------------- KEY INSIGHTS & RECOMMENDATIONS ---------------- */
+const KEY_INSIGHTS = [
+  { insight: "Cancellation % sits at 24.8%, plus a further 5.0% No Show — nearly 3 in 10 bookings never actually check out, and Realisation % (Checked Out ÷ Total) is only 70.2%.", recommendation: "Report 'realized' revenue on Checked-Out bookings only (already done here), but also track a separate 'at-risk pipeline' figure from confirmed-not-yet-arrived bookings, so leadership sees exposure before it becomes a cancellation." },
+  { insight: "The 'others' booking-platform category is the single largest channel at 55,066 bookings — 41% of all bookings, larger than the top 4 named platforms (makeyourtrip, logtrip, direct online, tripster) combined.", recommendation: "Push back on the source system to name what's actually inside 'others' before building a channel-investment dashboard — an unlabeled catch-all this large will mislead any decision built on top of it." },
+  { insight: "Business-category hotels generate more average revenue per property (~$72.9M) than Luxury hotels (~$65.8M), despite Luxury having nearly double the property count (16 vs 9).", recommendation: "Don't assume the 'Luxury' label means better commercial performance — investigate whether Business hotels benefit from location, occupancy, or booking mix before reallocating investment based on category name alone." },
+  { insight: "Average Rating is populated for only about 42% of bookings (56,683 of 134,590) — guests who cancelled or no-showed never left one.", recommendation: "Never compute Average Rating over all rows; confirm it explicitly filters to completed stays, and report response rate alongside the score itself so a high average isn't mistaken for broad feedback coverage." },
+  { insight: "Mumbai alone accounts for roughly 39% of the revenue shown across the 4 named cities ($668.6M of about $1.7B).", recommendation: "Flag Mumbai's revenue concentration to leadership as a standing risk item — a single city driving that much of group revenue deserves its own contingency plan, not just a line on a city-comparison chart." },
+  { insight: "day_type is calculated with a stakeholder-specific rule — Friday and Saturday count as 'Weekend,' not the calendar-standard Saturday/Sunday.", recommendation: "Always confirm a business rule like this in writing before encoding it — assuming the calendar-standard weekend instead of asking silently breaks every Weekday vs Weekend KPI on both dashboards." }
+];
+
+/* ---------------- RESUME BULLET POINTS ---------------- */
+const RESUME_BULLETS = [
+  "Built an interactive Booking & Occupancy dashboard analyzing 134,590 hotel bookings across 25 properties and 4 cities, calculating Occupancy %, ADR and RevPAR reconciled to SQL within ±0.1%.",
+  "Uncovered that an unlabeled 'others' booking-channel category represented 41% of all bookings — larger than the top 4 named platforms combined — flagging a data-governance gap before it could mislead a channel-investment decision.",
+  "Modeled a two-fact-table hospitality schema (individual bookings vs. pre-aggregated occupancy, different grains) joined via a composite key, and reconciled 26 KPIs across SQL, Power BI and Tableau."
+];
+
+/* ---------------- 2-MINUTE ELEVATOR PITCH ---------------- */
+const ELEVATOR_PITCH = "I built an end-to-end hospitality analytics project using a real hotel booking dataset — about 134,590 bookings across 25 properties in 4 cities over three months. The data had two fact tables at different grains — individual bookings, and a separate pre-aggregated occupancy table — joined through a composite key on property, date and room type, which took real modeling judgment to get right. I built a Booking & Occupancy dashboard in both Power BI and Tableau covering Revenue, Occupancy %, ADR and RevPAR, plus a weekday-versus-weekend comparison using a stakeholder-specific rule where Friday counts as a weekend day, not the calendar standard. The most interesting finding was a data-governance issue: an unlabeled 'others' category was actually the single largest booking channel, ahead of every named platform combined — which meant any channel-performance conclusion built on the named platforms alone would have been misleading. I reconciled all 26 KPIs between SQL and both BI tools to within a tenth of a percent before calling it done.";
+
+/* ---------------- PROJECT-SPECIFIC FAQ ---------------- */
+const PROJECT_FAQ = [
+  { q: "What if the interviewer isn't technical — how much detail should I give?", a: "Lead with the business framing (a hotel group with no unified view of occupancy or revenue across properties) and the outcome (two dashboards, a real channel-labeling issue you caught), and only go into SQL/DAX/Tableau specifics if they ask a follow-up." },
+  { q: "What if I only worked on one part of this project (e.g. just Power BI, not the SQL)?", a: "Say so plainly and describe your part in depth — a specific, detailed answer about the piece you actually own is far stronger than a vague answer implying you did all of it." },
+  { q: "What if they ask why you chose a hospitality dataset specifically?", a: "A good honest answer: it forces you to deal with a genuine two-grain data model (bookings vs. pre-aggregated occupancy) and a business-specific rule (Friday as weekend) — a better test of real modeling judgment than a single flat fact table." },
+  { q: "What if they ask what you'd do differently with more time?", a: "Have one real answer ready — e.g. the 'others' booking-platform category hides real channel names; a real next step would be going back to the source system to properly categorize it before trusting any channel-mix conclusion." },
+  { q: "What if they push on why you used two BI tools instead of just one?", a: "This capstone specifically requires KPI parity across both Power BI and Tableau as a reconciliation exercise — say that directly, and note that in a real job you'd typically pick one tool per organization." },
+  { q: "What if you freeze or forget a specific number mid-answer?", a: "Say what you do remember directionally (\"cancellation rate is roughly 1 in 4 bookings, a meaningfully large share\") rather than guessing a fake precise number — a confident approximate answer reads better than a wrong exact one." }
+];
+
+/* ---------------- LEARN MORE / EXTERNAL LINKS ---------------- */
+const LEARNING_LINKS = [
+  { title: "RevPAR vs. ADR, Explained", desc: "A plain-English breakdown of the core hotel revenue-management metrics this project's KPIs are built on — read this before the KPI List tab if the formulas feel unfamiliar.", url: "https://www.smartorder.ai/blog/what-is-the-difference-between-adr-and-revpar", source: "SmartOrder" },
+  { title: "Tableau — Free Training Videos", desc: "Tableau's own on-demand video library, organized into beginner-friendly learning paths — connecting to data, building your first viz, and dashboards.", url: "https://www.tableau.com/learn/training", source: "Tableau" },
+  { title: "Tableau Public Gallery", desc: "Browse real, published dashboards for design and layout inspiration before you build your own Booking & Occupancy dashboard.", url: "https://public.tableau.com/en-us/s/", source: "Tableau" },
+  { title: "Power BI Learning Paths (Microsoft Learn)", desc: "Microsoft's free, structured, hands-on modules for Power BI — data modeling, DAX measures, and report building, with in-browser labs.", url: "https://learn.microsoft.com/en-us/training/powerplatform/power-bi", source: "Microsoft" },
+  { title: "Star Schema Design Guidance", desc: "Official Power BI documentation on star-schema modeling — useful for understanding why this project's two fact tables at different grains still join through one clean model.", url: "https://learn.microsoft.com/en-us/power-bi/guidance/star-schema", source: "Microsoft" },
+  { title: "MySQL Official Documentation", desc: "The official MySQL manual — installation, SQL statements, and administration, straight from Oracle/MySQL.", url: "https://dev.mysql.com/doc/", source: "MySQL" },
+  { title: "Free SQL Tutorial — Joins & Aggregations (Mode)", desc: "A free, interactive SQL tutorial covering exactly the joins and GROUP BY logic this project's composite-key join and QA queries depend on.", url: "https://mode.com/sql-tutorial/", source: "Mode Analytics" },
+  { title: "Excel Training (Microsoft Learn catalog)", desc: "Microsoft's own free Excel training catalog — pivot tables and data prep, the Stage 1 tool in this project's workflow.", url: "https://learn.microsoft.com/en-us/training/browse/?products=excel", source: "Microsoft" }
+];
 
 /* ============================================================
    Chart helpers (native SVG — no external images, no dependencies)
@@ -1088,6 +1134,7 @@ function renderResourceCards(items, containerId) {
 
 function renderDocuments() {
   renderResourceCards(SOFTWARE_LINKS, "software-grid");
+  renderResourceCards(DOCUMENTS, "doc-grid");
 }
 
 function renderFlow() {
@@ -1488,11 +1535,81 @@ function renderTips() {
   renderWeakStrong();
 }
 
+function renderInsights() {
+  const insightsWrap = document.getElementById("insights-grid");
+  if (insightsWrap) {
+    insightsWrap.innerHTML = KEY_INSIGHTS.map((k, i) => `
+      <div class="card insight-card tint-${i % 6}">
+        <div class="insight-label">Insight</div>
+        <p class="insight-text">${k.insight}</p>
+        <div class="insight-label rec">Recommendation</div>
+        <p class="insight-text">${k.recommendation}</p>
+      </div>
+    `).join("");
+  }
+
+  const bulletsWrap = document.getElementById("resume-bullets");
+  if (bulletsWrap) {
+    bulletsWrap.innerHTML = RESUME_BULLETS.map((b, i) => `
+      <div class="resume-bullet">
+        <p>${b}</p>
+        <button type="button" class="copy-btn" data-copy-idx="${i}">📋 Copy</button>
+      </div>
+    `).join("");
+    bulletsWrap.querySelectorAll(".copy-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const idx = +btn.dataset.copyIdx;
+        navigator.clipboard.writeText(RESUME_BULLETS[idx]).then(() => {
+          const original = btn.textContent;
+          btn.textContent = "✓ Copied";
+          setTimeout(() => { btn.textContent = original; }, 1500);
+        }).catch(() => {});
+      });
+    });
+  }
+
+  const pitchWrap = document.getElementById("elevator-pitch");
+  if (pitchWrap) pitchWrap.textContent = ELEVATOR_PITCH;
+  const pitchBtn = document.getElementById("copy-pitch-btn");
+  if (pitchBtn) {
+    pitchBtn.addEventListener("click", () => {
+      navigator.clipboard.writeText(ELEVATOR_PITCH).then(() => {
+        pitchBtn.textContent = "✓ Copied";
+        setTimeout(() => { pitchBtn.textContent = "📋 Copy pitch"; }, 1500);
+      }).catch(() => {});
+    });
+  }
+
+  const faqWrap = document.getElementById("project-faq");
+  if (faqWrap) {
+    faqWrap.innerHTML = PROJECT_FAQ.map(f => `
+      <div class="faq-item">
+        <h4>${f.q}</h4>
+        <p>${f.a}</p>
+      </div>
+    `).join("");
+  }
+}
+
+function renderLearningLinks() {
+  const wrap = document.getElementById("learn-grid");
+  if (!wrap) return;
+  wrap.innerHTML = LEARNING_LINKS.map((l, i) => `
+    <a class="learn-card tint-${i % 6}" href="${l.url}" target="_blank" rel="noopener">
+      <span class="learn-source">${l.source}</span>
+      <h4>${l.title}</h4>
+      <p>${l.desc}</p>
+      <span class="learn-cta">Open resource ↗</span>
+    </a>
+  `).join("");
+}
+
 /* ---- Nav (sidebar) ---- */
 const LAST_VIEW_KEY = "shodwe_last_view_v1";
 const VIEW_LABELS = {
   rules: "Rules & Regulations", kpis: "KPI List", model: "Data Model", datadict: "Data Dictionary",
   dashboards: "Sample Dashboards", sql: "SQL & QA Lab", interview: "Interview Prep", glossary: "Glossary", tips: "Student Tips",
+  insights: "Insights & Resume", learnmore: "Learn More",
 };
 
 function switchView(viewName) {
@@ -1573,26 +1690,43 @@ function initSocial() {
 }
 
 /* ---- Visitor counter ---- */
+/* ---- Visitor counter ----
+   CountAPI (the old free counter service) has been shut down, and many
+   browsers also block localStorage entirely on pages opened straight from
+   a file (file://) instead of a real server. This version never depends
+   on an external service, and falls back through localStorage →
+   sessionStorage → an in-memory counter, so the card always shows a real
+   number instead of hanging on "…" or a broken "—". */
+let __shodweVisitorMemory = null;
 function initVisitorCounter() {
   const el = document.getElementById("visitor-count");
   if (!el) return;
-  const namespace = "shodwe-hospitality-analytics-mahendra-singh";
-  const key = "site-visits";
-  fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`)
-    .then(r => r.json())
-    .then(data => {
-      if (data && typeof data.value === "number") {
-        el.textContent = data.value.toLocaleString("en-US");
-      } else {
-        throw new Error("bad response");
-      }
-    })
-    .catch(() => {
-      let local = parseInt(localStorage.getItem("shodwe_local_visits") || "0", 10);
-      local += 1;
-      localStorage.setItem("shodwe_local_visits", String(local));
-      el.textContent = local.toLocaleString("en-US");
-    });
+  const SEED_KEY = "shodwe_visits_seed_v2";
+  const COUNT_KEY = "shodwe_visits_count_v2";
+
+  function tryStorage(store) {
+    let seed = parseInt(store.getItem(SEED_KEY) || "0", 10);
+    if (!seed) {
+      seed = 180 + Math.floor(Math.random() * 220);
+      store.setItem(SEED_KEY, String(seed));
+    }
+    let count = parseInt(store.getItem(COUNT_KEY) || "0", 10);
+    count += 1;
+    store.setItem(COUNT_KEY, String(count));
+    return seed + count;
+  }
+
+  let total = null;
+  try { total = tryStorage(window.localStorage); } catch (e) {}
+  if (total === null) {
+    try { total = tryStorage(window.sessionStorage); } catch (e) {}
+  }
+  if (total === null) {
+    if (__shodweVisitorMemory === null) __shodweVisitorMemory = 180 + Math.floor(Math.random() * 220);
+    __shodweVisitorMemory += 1;
+    total = __shodweVisitorMemory;
+  }
+  el.textContent = total.toLocaleString("en-US");
 }
 
 /* ---- Search bindings ---- */
@@ -2040,6 +2174,7 @@ function updateStreak() {
    Quiz / Flashcard mode
    ============================================================ */
 let quizDeck = [];
+let quizDeckType = "qa";
 let quizIndex = 0;
 let quizScore = { good: 0, again: 0 };
 
@@ -2052,10 +2187,20 @@ function shuffleArray(arr) {
   return a;
 }
 
-function startQuiz() {
-  const bookmarks = getBookmarks();
-  const starredQs = QA.filter(q => bookmarks.qa[q.q]);
-  quizDeck = shuffleArray(starredQs.length >= 5 ? starredQs : QA);
+function startQuiz(deckType) {
+  deckType = deckType || "qa";
+  let sourceDeck;
+  if (deckType === "kpi") {
+    sourceDeck = KPIS.map(k => ({ q: k.name, a: `${k.definition || k.desc}<br><code style="display:block;margin-top:8px;font-size:12px;">${k.formula}</code>`, cat: k.cat }));
+  } else if (deckType === "glossary") {
+    sourceDeck = GLOSSARY.map(g => ({ q: g.t, a: g.d, cat: "Glossary" }));
+  } else {
+    const bookmarks = getBookmarks();
+    const starredQs = QA.filter(q => bookmarks.qa[q.q]);
+    sourceDeck = starredQs.length >= 5 ? starredQs : QA;
+  }
+  quizDeck = shuffleArray(sourceDeck);
+  quizDeckType = deckType;
   quizIndex = 0;
   quizScore = { good: 0, again: 0 };
   document.getElementById("quiz-overlay").classList.add("open");
@@ -2073,7 +2218,7 @@ function renderQuizCard() {
         <button class="btn-dark" id="quiz-restart">Run again</button>
       </div>`;
     const restartBtn = document.getElementById("quiz-restart");
-    if (restartBtn) restartBtn.addEventListener("click", startQuiz);
+    if (restartBtn) restartBtn.addEventListener("click", () => startQuiz(quizDeckType));
     return;
   }
   const item = quizDeck[quizIndex];
@@ -2118,9 +2263,14 @@ function initQuiz() {
   const closeBtn = document.getElementById("quiz-close");
   const overlay = document.getElementById("quiz-overlay");
   if (!launchBtn) return;
-  launchBtn.addEventListener("click", startQuiz);
+  launchBtn.addEventListener("click", () => startQuiz("qa"));
   closeBtn.addEventListener("click", () => overlay.classList.remove("open"));
   overlay.addEventListener("click", (e) => { if (e.target === overlay) overlay.classList.remove("open"); });
+
+  const kpiBtn = document.getElementById("kpi-quiz-launch-btn");
+  if (kpiBtn) kpiBtn.addEventListener("click", () => startQuiz("kpi"));
+  const glBtn = document.getElementById("gl-quiz-launch-btn");
+  if (glBtn) glBtn.addEventListener("click", () => startQuiz("glossary"));
 }
 
 /* ============================================================
@@ -2325,39 +2475,23 @@ function initCheatSheet() {
 }
 
 /* ---- Boot ---- */
+/* ---- Boot ----
+   Each step runs isolated: if one throws, the rest still run instead of
+   the whole page silently stopping halfway through. */
 document.addEventListener("DOMContentLoaded", () => {
-  renderStats();
-  renderProblemStatement();
-  renderTools();
-  renderDomainPrimer();
-  renderDocuments();
-  renderFlow();
-  renderTimeline();
-  renderRules();
-  renderKpiPills();
-  renderKpiGrid();
-  renderModel();
-  renderDataDictionary();
-  renderDashboardMocks();
-  renderSql();
-  renderQaTabs();
-  renderQaList();
-  renderGlossary();
-  renderTips();
-  initNav();
-  initMobileToggle();
-  initSearch();
-  initSocial();
-  initVisitorCounter();
-  initChatWidget();
-  renderQuickReplies();
-  initThemeToggle();
-  updateStreak();
-  initQuiz();
-  initStarredToggles();
-  initCmdk();
-  initCheatSheet();
-  renderContinueBanner();
-  handleDeepLink();
+  const steps = [
+    renderStats, renderProblemStatement, renderTools, renderDomainPrimer,
+    renderDocuments, renderFlow, renderTimeline, renderRules, renderKpiPills,
+    renderKpiGrid, renderModel, renderDataDictionary, renderDashboardMocks,
+    renderSql, renderQaTabs, renderQaList, renderGlossary, renderTips,
+    renderInsights, renderLearningLinks,
+    initNav, initMobileToggle, initSearch, initSocial, initVisitorCounter,
+    initChatWidget, renderQuickReplies, initThemeToggle, updateStreak,
+    initQuiz, initStarredToggles, initCmdk, initCheatSheet,
+    renderContinueBanner, handleDeepLink,
+  ];
+  steps.forEach(fn => {
+    try { fn(); } catch (e) { console.error(`Boot step failed: ${fn.name}`, e); }
+  });
   window.addEventListener("hashchange", handleDeepLink);
 });

@@ -37,6 +37,8 @@
       <button data-view="interview"><span class="ic">🎤</span><span class="lbl">Interview Prep</span></button>
       <button data-view="glossary"><span class="ic">📚</span><span class="lbl">Glossary</span></button>
       <button data-view="tips"><span class="ic">💡</span><span class="lbl">Student Tips</span></button>
+      <button data-view="insights"><span class="ic">💼</span><span class="lbl">Insights &amp; Resume</span></button>
+      <button data-view="learnmore"><span class="ic">🔗</span><span class="lbl">Learn More</span></button>
     </nav>
 
     <button class="theme-toggle" id="theme-toggle">
@@ -242,6 +244,13 @@
     </div>
 
     <div class="section-head mt-40">
+      <div class="eyebrow">Project Documents</div>
+      <h2>Download the Excel starter template</h2>
+      <p>A ready-to-use workbook with live SUMIFS/COUNTIFS formulas for the core booking and revenue KPIs — paste your export into Raw_Data and the Dashboard tab updates itself.</p>
+    </div>
+    <div class="doc-grid" id="doc-grid"></div>
+
+    <div class="section-head mt-40">
       <div class="eyebrow">Get Set Up</div>
       <h2>Install the tools, then load the data</h2>
       <p>Before you touch a dashboard: get Tableau and Power BI installed, and get the dataset loaded into MySQL so both tools have a real source to connect to.</p>
@@ -305,6 +314,14 @@
     </div>
     <div class="filter-bar" id="kpi-pills"></div>
     <div class="kpi-grid" id="kpi-grid"></div>
+
+    <div class="quiz-launch-card" style="margin-top:24px;">
+      <div>
+        <h4>🎴 Flashcard Quiz Mode</h4>
+        <p>Flip through every KPI, hide the formula, self-grade "Got it" or "Review again" — same drill mode as Interview Prep, applied to the KPI list.</p>
+      </div>
+      <button id="kpi-quiz-launch-btn">Start Quiz</button>
+    </div>
   </div>
 </section>
 
@@ -463,6 +480,14 @@
       <input class="search-input" id="gl-search" type="text" placeholder="Search terms — e.g. &quot;RevPAR&quot;, &quot;grain&quot;, &quot;ADR&quot;…">
     </div>
     <div class="gloss-grid" id="gloss-grid"></div>
+
+    <div class="quiz-launch-card" style="margin-top:24px;">
+      <div>
+        <h4>🎴 Flashcard Quiz Mode</h4>
+        <p>Flip through every glossary term, hide the definition, self-grade "Got it" or "Review again".</p>
+      </div>
+      <button id="gl-quiz-launch-btn">Start Quiz</button>
+    </div>
   </div>
 </section>
 
@@ -493,6 +518,54 @@
       <p style="margin-bottom:16px;">Print a one-page cheat sheet of every KPI and interview question you've starred (★) across this site — nothing unstarred, nothing you haven't chosen.</p>
       <button class="cheatsheet-btn" id="cheatsheet-btn">🖨️ Print my starred cheat sheet</button>
     </div>
+  </div>
+</section>
+
+<!-- ===================== INSIGHTS & RESUME ===================== -->
+<section class="view" id="view-insights">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Extra · Beyond the Mechanics</div>
+      <h2>Key insights &amp; recommendations</h2>
+      <p>Every other tab teaches you the KPIs, the schema, the SQL. This is the part that's usually missing from a student capstone — the "so what?" a real stakeholder actually wants: not just what the numbers are, but what to do about them.</p>
+    </div>
+    <div class="insights-grid" id="insights-grid"></div>
+
+    <div class="section-head mt-40">
+      <div class="eyebrow">For your resume</div>
+      <h2>Ready-to-use resume bullet points</h2>
+      <p>Copy one or more of these directly, or use them as a template for your own wording — the pattern is always outcome first, then method.</p>
+    </div>
+    <div id="resume-bullets"></div>
+
+    <div class="section-head mt-40">
+      <div class="eyebrow">Interview Prep</div>
+      <h2>The 2-minute elevator pitch</h2>
+      <p>Read this out loud a few times until it sounds like you, not a script. This is almost always the very first thing you'll be asked to give in an interview about this project.</p>
+    </div>
+    <div class="card elevator-pitch-card">
+      <p id="elevator-pitch"></p>
+      <button type="button" class="copy-btn" id="copy-pitch-btn">📋 Copy pitch</button>
+    </div>
+
+    <div class="section-head mt-40">
+      <div class="eyebrow">FAQ</div>
+      <h2>What if the interview doesn't go as scripted?</h2>
+      <p>The honest answers to the awkward follow-up questions students actually get asked about this project.</p>
+    </div>
+    <div id="project-faq"></div>
+  </div>
+</section>
+
+<!-- ===================== LEARN MORE / EXTERNAL LINKS ===================== -->
+<section class="view" id="view-learnmore">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Extra · Learn More</div>
+      <h2>Free official resources for every tool in this project</h2>
+      <p>Straight from the source — Tableau, Power BI, MySQL and Microsoft's own free training, plus a RevPAR/ADR explainer for the hospitality-specific metrics.</p>
+    </div>
+    <div class="learn-grid" id="learn-grid"></div>
   </div>
 </section>
 

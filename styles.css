@@ -1452,3 +1452,89 @@ body.dark-mode img.tool-logo, body.dark-mode img.doc-icon { background: #fff; bo
   #print-sheet .ps-item p { font-size: 11px; color: #333; margin-bottom: 3px; }
   #print-sheet .ps-item code { font-size: 10.5px; color: #0a6f65; }
 }
+
+/* ---------- Insights & Resume tab ---------- */
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 14px;
+}
+.insight-card { border-radius: var(--radius); border: 1.5px solid var(--line); padding: 18px; }
+.insight-label { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--teal-deep, var(--teal)); margin-bottom: 4px; }
+.insight-label.rec { color: var(--amber, #A15C07); margin-top: 12px; }
+.insight-text { font-size: 13px; line-height: 1.55; color: var(--ink); margin: 0; }
+
+.resume-bullet {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 10px;
+}
+.resume-bullet p { flex: 1; font-size: 13.5px; line-height: 1.55; margin: 0; }
+.copy-btn {
+  flex: none;
+  font-family: var(--body);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1.5px solid var(--teal);
+  background: var(--teal-tint);
+  color: var(--teal-deep, var(--teal));
+  cursor: pointer;
+  white-space: nowrap;
+}
+.copy-btn:hover { background: var(--teal); color: #fff; }
+
+.elevator-pitch-card { padding: 22px; }
+.elevator-pitch-card p { font-size: 14px; line-height: 1.7; color: var(--ink); margin: 0 0 16px; font-style: italic; }
+
+.faq-item { border-bottom: 1px solid var(--line-soft); padding: 16px 0; }
+.faq-item:first-child { padding-top: 0; }
+.faq-item:last-child { border-bottom: none; }
+.faq-item h4 { font-size: 14px; margin: 0 0 6px; color: var(--ink); }
+.faq-item p { font-size: 13px; line-height: 1.55; color: var(--ink-muted); margin: 0; }
+
+/* ---------- Learn More / external links ---------- */
+.learn-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 14px;
+}
+.learn-card {
+  display: block;
+  border-radius: var(--radius);
+  border: 1.5px solid var(--line);
+  padding: 16px 18px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.learn-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
+.learn-card .learn-source {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.65);
+  margin-bottom: 8px;
+}
+.learn-card h4 { font-size: 14.5px; margin: 0 0 6px; line-height: 1.35; }
+.learn-card p { font-size: 12.5px; color: var(--ink-muted); margin: 0 0 12px; line-height: 1.5; }
+.learn-card .learn-cta { font-size: 12px; font-weight: 700; color: var(--teal-deep, var(--teal)); }
+
+/* Light pastel tints, cycled so cards read distinctly at a glance */
+.tint-0 { background: #EAF6F1; border-color: #BFE3D3; }
+.tint-1 { background: #EAF1FB; border-color: #C4D8F5; }
+.tint-2 { background: #FDF3E4; border-color: #F0D9AE; }
+.tint-3 { background: #FBEAEA; border-color: #F0C4C4; }
+.tint-4 { background: #F1EEFB; border-color: #D6CDF2; }
+.tint-5 { background: #EAF7F7; border-color: #BFE6E6; }
