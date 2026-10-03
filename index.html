@@ -3,42 +3,78 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shodwe Hospitality Analytics — Project & Interview Prep</title>
-<meta name="description" content="Capstone reference and interview preparation hub for the Shodwe Group hospitality analytics project — hotel booking, occupancy and revenue analytics, tools, rules, KPIs, data model, sample dashboards, SQL QA, and interview questions.">
+<title>ShodweStay Hospitality Analytics — Capstone, Practice & Interview Prep</title>
+<meta name="description" content="Hospitality analytics capstone hub for ShodweStay — learning roadmap, 5-table hotel booking dataset, two-grain data model, 26 KPIs with DAX, SQL & QA lab, assignments, analyst thinking lab, dashboard gallery, interview prep and resume.">
+<link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<button class="mobile-toggle" id="mobile-toggle" aria-label="Open menu">☰ <span>Lessons</span></button>
+<button class="mobile-toggle" id="mobile-toggle" aria-label="Open menu">☰ <span>Menu</span></button>
 <div class="scrim" id="scrim"></div>
 
 <div class="app-shell">
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <img src="assets/excelr-logo.png" alt="ExcelR" class="sidebar-excelr-logo">
-      <img src="assets/shodwe-logo.png" alt="Shodwe Hotel" class="sidebar-project-logo">
-      <div class="sidebar-by">by Mahendra Singh</div>
+      <a href="#" class="brand-home" id="brand-home" title="Go to Home" aria-label="ShodweStay Hospitality Analytics: go to Home">
+        <img src="assets/shodwe-logo.png" alt="Shodwe Hotel" class="brand-logo-img" style="max-width:150px;">
+      </a>
+      <div class="sidebar-project">
+        <div class="p1">Hospitality Analytics Capstone</div>
+        <div class="p2">by Mahendra Singh · <a href="https://www.crackanalytics.com/" target="_blank" rel="noopener">CrackAnalytics</a></div>
+      </div>
     </div>
 
     <div class="sidebar-progress">
       <div class="progress-track"><div class="progress-fill" id="sidebar-progress-fill"></div></div>
-      <div class="progress-caption" id="sidebar-progress-caption">0% complete · 0/63 questions reviewed</div>
+      <div class="progress-caption" id="sidebar-progress-caption">0% project complete</div>
     </div>
     <div class="streak-badge" id="streak-badge"></div>
 
     <nav class="sidebar-nav" id="nav">
-      <button data-view="overview" class="active"><span class="ic">🏠</span><span class="lbl">Home</span></button>
+      <div class="nav-group-label">Home</div>
+      <button data-view="overview" class="active"><span class="ic">🏠</span><span class="lbl">Home &amp; Roadmap</span></button>
+      <button data-view="progress"><span class="ic">📈</span><span class="lbl">My Progress</span></button>
+
+      <div class="nav-group-label">Business Problem</div>
+      <button data-view="problem"><span class="ic">🎯</span><span class="lbl">Problem &amp; Business Questions</span></button>
       <button data-view="rules"><span class="ic">📋</span><span class="lbl">Rules &amp; Regulations</span></button>
-      <button data-view="kpis"><span class="ic">📊</span><span class="lbl">KPI List</span></button>
+
+      <div class="nav-group-label">Data</div>
+      <button data-view="dataset"><span class="ic">🗃️</span><span class="lbl">Dataset</span></button>
       <button data-view="model"><span class="ic">🗂️</span><span class="lbl">Data Model</span></button>
       <button data-view="datadict"><span class="ic">📖</span><span class="lbl">Data Dictionary</span></button>
-      <button data-view="dashboards"><span class="ic">📈</span><span class="lbl">Sample Dashboards</span></button>
-      <button data-view="sql"><span class="ic">🗄️</span><span class="lbl">SQL &amp; QA Lab</span></button>
-      <button data-view="interview"><span class="ic">🎤</span><span class="lbl">Interview Prep</span></button>
+      <button data-view="quality"><span class="ic">🧹</span><span class="lbl">Data Quality</span></button>
+
+      <div class="nav-group-label">Analytics</div>
+      <button data-view="kpis"><span class="ic">📊</span><span class="lbl">KPI Library</span></button>
+      <button data-view="sql"><span class="ic">🗄️</span><span class="lbl">SQL Lab</span></button>
+      <button data-view="excel"><span class="ic">🧮</span><span class="lbl">Excel Analysis</span></button>
+      <button data-view="analysis"><span class="ic">💡</span><span class="lbl">Business Analysis</span></button>
+
+      <div class="nav-group-label">Dashboards</div>
+      <button data-view="dashboards"><span class="ic">🖼️</span><span class="lbl">Dashboard Gallery</span></button>
+
+      <div class="nav-group-label">QA</div>
+      <button data-view="qa"><span class="ic">🧪</span><span class="lbl">QA &amp; Reconciliation</span></button>
+
+      <div class="nav-group-label">Practice</div>
+      <button data-view="assignments"><span class="ic">📝</span><span class="lbl">Assignments</span></button>
+      <button data-view="lab"><span class="ic">🧠</span><span class="lbl">Analyst Thinking Lab</span></button>
+
+      <div class="nav-group-label">Interview</div>
+      <button data-view="interview"><span class="ic">🎤</span><span class="lbl">Interview Questions</span></button>
+      <button data-view="pitch"><span class="ic">⏱️</span><span class="lbl">90-sec Project Pitch</span></button>
+
+      <div class="nav-group-label">Career</div>
+      <button data-view="career"><span class="ic">💼</span><span class="lbl">Resume, LinkedIn &amp; Portfolio</span></button>
+
+      <div class="nav-group-label">Resources</div>
       <button data-view="glossary"><span class="ic">📚</span><span class="lbl">Glossary</span></button>
-      <button data-view="tips"><span class="ic">💡</span><span class="lbl">Student Tips</span></button>
-      <button data-view="insights"><span class="ic">💼</span><span class="lbl">Insights &amp; Resume</span></button>
+      <button data-view="tips"><span class="ic">✨</span><span class="lbl">Student Tips</span></button>
       <button data-view="learnmore"><span class="ic">🔗</span><span class="lbl">Learn More</span></button>
+      <a class="nav-ext" href="https://roadmap.sh/data-analyst" target="_blank" rel="noopener"><span class="ic">🗺️</span><span class="lbl">Data Analyst Roadmap ↗</span></a>
+      <a class="nav-ext" href="https://90daysailearning.vercel.app/" target="_blank" rel="noopener"><span class="ic">🤖</span><span class="lbl">AI Learning (90 Days) ↗</span></a>
     </nav>
 
     <button class="theme-toggle" id="theme-toggle">
@@ -46,15 +82,15 @@
     </button>
 
     <div class="sidebar-footer">
-      <a href="#" id="side-youtube" target="_blank" rel="noopener">▶ YouTube</a>
-      <a href="#" id="side-medium" target="_blank" rel="noopener">✍ Medium</a>
-      <a href="#" id="side-linkedin" target="_blank" rel="noopener">in LinkedIn</a>
+      <a href="https://www.youtube.com/channel/UC2q-vZWSlQpiGiMcSLUqnIg" id="side-youtube" target="_blank" rel="noopener">▶ YouTube</a>
+      <a href="https://medium.com/@mahendraa1188" id="side-medium" target="_blank" rel="noopener">✍ Medium</a>
+      <a href="https://www.linkedin.com/in/mahendra-singh-%F0%9F%87%AE%F0%9F%87%B3%F0%9F%9A%80%E2%9D%84%EF%B8%8F-%F0%9F%90%8D-%F0%9F%A6%84-83699485/" id="side-linkedin" target="_blank" rel="noopener">in LinkedIn</a>
     </div>
   </aside>
 
   <main class="main-content">
 
-<!-- ===================== OVERVIEW ===================== -->
+<!-- ===================== HOME ===================== -->
 <section class="view active" id="view-overview">
   <div class="wrap">
     <div id="continue-banner" class="continue-banner" style="display:none;"></div>
@@ -64,177 +100,177 @@
         <div class="hero-content">
           <div class="eyebrow">Capstone Project · Data Analytics Training Programme</div>
           <h1>Shodwe<span class="accent-axon">Stay</span> Hospitality Analytics — <span class="hl-mark">from raw bookings to a defensible BI story</span>.</h1>
-          <p class="lead">A hands-on capstone built around a real hotel-booking dataset for Shodwe Group — 134,590 individual bookings and 9,200 pre-aggregated occupancy records across 25 hotels in 4 cities, over 92 days (May–July). You'll take that data through Excel, SQL, Tableau and Power BI, implementing 25 KPIs and DAX measures — from headline Revenue and Occupancy % down to week-over-week trend indicators — into one Booking &amp; Occupancy dashboard, then defend the numbers in a QA review.</p>
+          <p class="lead">A hands-on capstone built around a hotel-booking dataset for Shodwe Group: 134,590 individual bookings and 9,200 pre-aggregated occupancy records across 25 hotels in 4 cities, over 92 days (May–July 2022). You'll take the data through Excel, SQL, Tableau and Power BI, implement the 26-measure KPI register, from Revenue and Occupancy % down to week-over-week trends, in one Booking &amp; Occupancy dashboard, then defend the numbers in a QA review.</p>
           <div class="hero-meta">
             <span class="chip">134,590 Bookings</span>
             <span class="chip">25 Hotels · 4 Cities</span>
             <span class="chip">5 Tables · 2 Fact Grains</span>
+            <span class="chip">8 must-know KPIs · 26 in total</span>
             <span class="chip">Excel → SQL → Tableau → Power BI → QA</span>
           </div>
           <div class="hero-cta">
-            <button class="btn-dark" data-goto="kpis">Start with the KPI List</button>
+            <button class="btn-dark" data-goto="journey-anchor">Start Learning Journey</button>
             <a class="btn-yellow" href="https://www.crackanalytics.com/" target="_blank" rel="noopener">Interview Preparation ↗</a>
+            <a class="btn-sky" href="https://www.certiva.co.in/" target="_blank" rel="noopener">Certification Dumps ↗</a>
+            <a class="btn-ai" href="https://90daysailearning.vercel.app/" target="_blank" rel="noopener">🤖 AI Learning ↗</a>
           </div>
-          <div class="callout-yellow">
-            <strong>How to use this site:</strong> Follow the tabs in the sidebar. Know your KPI List and Data Model cold first (that's where most students fumble in QA — especially the two-fact-table composite join), then work through Interview Prep by category. For a much deeper interview-question bank across SQL, Power BI, Tableau, Excel and more, <a href="https://www.crackanalytics.com/" target="_blank" rel="noopener">CrackAnalytics</a> is Mahendra's dedicated free prep course.
-          </div>
-          <div class="stat-strip" id="stat-strip"></div>
         </div>
-
         <div class="hero-side">
-          <div class="card illustration-card">
-            <img class="doctor-illustration" src="assets/hero-mockup.png" alt="Shodwe Hotel dashboard mockup — total bookings, guests, ADR KPI cards, occupancy gauge, revenue overview chart, room type performance donut, top revenue channels">
+        <div class="hero-visual">
+          <img src="assets/hero-mockup.png" alt="Shodwe Hotel dashboard mockup — total bookings, guests, ADR cards, occupancy gauge, revenue overview and room-type mix">
+          <div class="cap">Layout reference for inspiration — illustrative values. Your dashboard must use the numbers from the dataset (see the KPI Library answer key).</div>
+        </div>
+        <div class="card social-card">
+          <img src="assets/mahendra-photo.jpg" alt="Mahendra Singh" class="social-avatar">
+          <div class="social-title">Learn with Mahendra Singh</div>
+          <div class="social-links">
+            <a href="https://www.youtube.com/channel/UC2q-vZWSlQpiGiMcSLUqnIg" id="social-youtube" target="_blank" rel="noopener"><img class="sl-badge-img" src="assets/youtube-icon.png" alt="">YouTube channel</a>
+            <a href="https://medium.com/@mahendraa1188" id="social-medium" target="_blank" rel="noopener"><img class="sl-badge-img" src="assets/medium-icon.png" alt="">Medium blog</a>
+            <a href="https://www.linkedin.com/in/mahendra-singh-%F0%9F%87%AE%F0%9F%87%B3%F0%9F%9A%80%E2%9D%84%EF%B8%8F-%F0%9F%90%8D-%F0%9F%A6%84-83699485/" id="social-linkedin" target="_blank" rel="noopener"><i class="sl-badge sl-li">in</i>LinkedIn</a>
           </div>
-
-          <div class="card counter-card">
-            <div class="cc-label">Students visited</div>
-            <div class="cc-number" id="visitor-count">…</div>
-            <div class="cc-sub">and counting — share it with your study group!</div>
-          </div>
-
-          <div class="card social-card">
-            <img src="assets/mahendra-photo.jpg" alt="Mahendra Singh" class="social-avatar">
-            <div class="social-title">Learn with Mahendra Singh</div>
-            <div class="social-links">
-              <a href="#" id="social-youtube" target="_blank" rel="noopener"><img class="sl-badge-img" src="assets/youtube-icon.png" alt="">YouTube channel</a>
-              <a href="#" id="social-medium" target="_blank" rel="noopener"><img class="sl-badge-img" src="assets/medium-icon.png" alt="">Medium blog</a>
-              <a href="#" id="social-linkedin" target="_blank" rel="noopener"><i class="sl-badge sl-li">in</i>LinkedIn</a>
-            </div>
-          </div>
+        </div>
         </div>
       </div>
+      <div class="callout-yellow">
+        <strong>How to use this site:</strong> Follow the <strong>Learning Journey</strong> below, one step at a time. Each step has a <em>Start →</em> button that opens the right page, and you can tick it off when you're done. Your progress is saved on this device. Know the KPI List and Data Model cold first (that's where most students fumble in QA, especially the two-fact-table composite join and the Friday–Saturday weekend rule), then practise with the Assignments and the Analyst Thinking Lab. For a much deeper question bank across SQL, Power BI, Tableau and Excel, <a href="https://www.crackanalytics.com/" target="_blank" rel="noopener">CrackAnalytics</a> is Mahendra's dedicated prep course.
+      </div>
+      <div class="disclaimer-box">
+        <strong>🎓 Educational project.</strong> This hotel dataset is provided for training and the Shodwe brand is used for this capstone only. <strong>Never upload real guest data (names, phone numbers, payment details) into this project or any public portfolio.</strong>
+      </div>
+      <div class="section-head mt-40" style="margin-bottom:14px;">
+        <div class="eyebrow">Where should I start?</div>
+        <h2>Pick your starting point</h2>
+      </div>
+      <div class="start-grid">
+        <div class="start-card lvl-1"><div class="lvl">🟢 Beginner</div><h4>New to data projects</h4><p>Follow the 10-step guided journey from the business problem to the final presentation. Start with the 8 P1 KPIs only.</p><button class="btn-blue" data-goto="journey-anchor">Start Guided Project →</button></div>
+        <div class="start-card lvl-2"><div class="lvl">🟡 Intermediate</div><h4>Know SQL / Power BI basics</h4><p>Jump to the data model and KPI library, then prove yourself in the Assignments with auto-checked answers.</p><button class="btn-blue" data-goto="model">Start Analytics →</button></div>
+        <div class="start-card lvl-3"><div class="lvl">🔵 Interview Ready</div><h4>Project done, interview coming</h4><p>Drill the project questions, avoid the common traps, practise the 90-second pitch and copy your resume block.</p><button class="btn-blue" data-goto="interview">Start Interview Prep →</button></div>
+      </div>
+      <div class="stat-strip" id="stat-strip"></div>
+      <div class="card progress-mini mt-16" id="home-progress"></div>
     </div>
 
     <div class="pulse-rule mt-40">
       <svg viewBox="0 0 1200 28" preserveAspectRatio="none"><path d="M0,14 L380,14 L410,4 L430,24 L450,14 L1200,14"/></svg>
     </div>
 
-    <div class="section-head mt-40">
-      <div class="eyebrow">Why this project exists</div>
-      <h2>Problem Statement</h2>
-      <p>Shodwe Group, a big-sized hospitality chain with properties across India, was struggling with fragmented and delayed reporting — <em>"We were making decisions reactively, not proactively," — Hotel Revenue Manager, Shodwe Group.</em></p>
+    <div class="section-head mt-40" id="journey-anchor">
+      <div class="eyebrow">🚀 Your Learning Journey</div>
+      <h2>Ten steps, in this order: don't skip ahead</h2>
+      <p>Each step builds on the previous one. Click <strong>Start →</strong> to open the page for that step, then mark it done.</p>
     </div>
-    <div class="rule-grid" id="problem-grid"></div>
+    <div class="roadmap-cta card">
+      <div><h4>🗺️ New to data analytics? See the full Data Analyst Roadmap</h4><p>This project covers one part of the journey. The roadmap shows every skill a data analyst needs, from Excel and SQL to statistics and visualization, in the order to learn them.</p></div>
+      <a class="btn-sky" href="https://roadmap.sh/data-analyst" target="_blank" rel="noopener">Open Data Analyst Roadmap ↗</a>
+    </div>
+    <div class="journey" id="journey"></div>
+
+    <div class="section-head mt-40">
+      <div class="eyebrow">🎯 Project Deliverables</div>
+      <h2>What you should have in hand when the project is complete</h2>
+      <p>Tick each deliverable as you finish it. This is also exactly what to show in a portfolio or an interview walkthrough.</p>
+    </div>
+    <div class="deliv-grid" id="deliv-grid"></div>
+
+    <div class="section-head mt-40">
+      <div class="eyebrow">Before vs After</div>
+      <h2>What changes when hotel reporting moves from spreadsheets to analytics</h2>
+      <p>Use this exact contrast when an interviewer asks "what was the value of your project?"</p>
+    </div>
+    <div class="ba-grid" id="before-after"></div>
 
     <div class="section-head mt-40">
       <div class="eyebrow">Tools used in this capstone</div>
       <h2>One booking dataset, four tools, one story</h2>
-      <p>Each tool plays a distinct role in the pipeline — interviewers frequently probe why a given stage used the tool it did.</p>
+      <p>Each tool plays a distinct role in the pipeline. Interviewers frequently probe why a given stage used the tool it did.</p>
     </div>
     <div class="tool-grid" id="tool-grid"></div>
     <div class="callout mt-16">
       <h4>How the same dataset moves through all four tools</h4>
-      <p><strong>Excel:</strong> work directly on the raw dim_hotels / dim_rooms / dim_date / fact_bookings / fact_aggregated_bookings export — clean it and build the first-pass dashboard straight from the spreadsheet.<br>
-      <strong>Tableau &amp; Power BI:</strong> don't connect to the Excel file. First load the dataset into SQL, then connect Tableau and Power BI <em>to SQL</em> as the data source — specifically to vw_hotel_booking_analysis, the pre-joined mart view — and build the dashboard from there.<br>
-      <strong>QA:</strong> run SQL queries directly against the backend database, then match every count, sum and percentage against what's shown on the Booking &amp; Occupancy dashboard — that reconciliation is what a QA review actually checks.</p>
+      <p><strong>Excel:</strong> work directly on fact_bookings: total bookings, cancellation %, realisation %, ADR and average rating with live formulas (starter template below).<br>
+      <strong>Tableau &amp; Power BI:</strong> don't connect to the Excel files. Load all 5 tables into MySQL, then connect Tableau and Power BI <em>to SQL</em>: the dimensional model for Power BI, and the <code>vw_hotel_booking_analysis</code> mart view for quick Tableau work.<br>
+      <strong>QA:</strong> run SQL directly against the database, then match every revenue, occupancy, ADR, RevPAR and cancellation number against the dashboards.</p>
     </div>
 
     <div class="section-head mt-40">
       <div class="eyebrow">Data Pipeline</div>
       <h2>Hospitality data → ETL → warehouse → Tableau / Power BI</h2>
-      <p>The full path data actually travels: booking and occupancy exports get loaded and cleaned, transformed into the analytics warehouse, and both BI tools connect only to the warehouse — never to each other, never to the raw export directly.</p>
+      <p>The full path data actually travels: PMS and channel exports get loaded and cleaned, transformed into the hotel data mart, and both BI tools connect only to the mart.</p>
     </div>
     <div class="pipeline-card-dark">
-      <svg class="pipeline-svg" viewBox="0 0 1080 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animated data pipeline: hospitality booking data writes to a source database, ETL extracts it into a data warehouse, and Tableau, Power BI, and an AI/insights layer all connect to that warehouse">
+      <svg class="pipeline-svg" viewBox="0 0 1080 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animated data pipeline: hotel booking systems land in a source database, ETL extracts it into a data warehouse, and Tableau, Power BI, and an AI/insights layer all connect to that warehouse">
         <defs>
-          <marker id="arrow2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-            <path d="M0,0 L6,3 L0,6 Z" fill="#4A535E"/>
-          </marker>
-          <filter id="dotglow" x="-200%" y="-200%" width="500%" height="500%">
-            <feGaussianBlur stdDeviation="2.4" result="blur"/>
-            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
-          <path id="p1" d="M170,145 H225" />
-          <path id="p2" d="M365,145 H420" />
-          <path id="p3" d="M580,145 H635" />
-          <path id="p4" d="M815,145 C845,145 845,55 870,55" />
-          <path id="pAI" d="M815,145 C845,145 845,150 870,150" />
-          <path id="p5" d="M815,145 C845,145 845,245 870,245" />
+          <marker id="arrow2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#4A535E"/></marker>
+          <filter id="dotglow" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="2.4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <path id="p1" d="M170,145 H225" /><path id="p2" d="M365,145 H420" /><path id="p3" d="M580,145 H635" />
+          <path id="p4" d="M815,145 C845,145 845,55 870,55" /><path id="pAI" d="M815,145 C845,145 845,150 870,150" /><path id="p5" d="M815,145 C845,145 845,245 870,245" />
         </defs>
-
         <use href="#p1" stroke="#3A424B" stroke-width="2" fill="none" marker-end="url(#arrow2)"/>
         <use href="#p2" stroke="#3A424B" stroke-width="2" fill="none" marker-end="url(#arrow2)"/>
         <use href="#p3" stroke="#3A424B" stroke-width="2" fill="none" marker-end="url(#arrow2)"/>
         <use href="#p4" stroke="#3A424B" stroke-width="2" fill="none" marker-end="url(#arrow2)"/>
         <use href="#pAI" stroke="#3A424B" stroke-width="2" fill="none" marker-end="url(#arrow2)"/>
         <use href="#p5" stroke="#3A424B" stroke-width="2" fill="none" marker-end="url(#arrow2)"/>
-
-        <circle r="4" fill="#7FD9BE" filter="url(#dotglow)"><animateMotion dur="1.8s" repeatCount="indefinite" begin="0s"><mpath href="#p1"/></animateMotion></circle>
-        <circle r="4" fill="#7FD9BE" filter="url(#dotglow)"><animateMotion dur="1.8s" repeatCount="indefinite" begin="0.9s"><mpath href="#p1"/></animateMotion></circle>
-
-        <circle r="4" fill="#7FD9BE" filter="url(#dotglow)"><animateMotion dur="1.6s" repeatCount="indefinite" begin="0.35s"><mpath href="#p2"/></animateMotion></circle>
-        <circle r="4" fill="#7FD9BE" filter="url(#dotglow)"><animateMotion dur="1.6s" repeatCount="indefinite" begin="1.15s"><mpath href="#p2"/></animateMotion></circle>
-
-        <circle r="4" fill="#0D9488" filter="url(#dotglow)"><animateMotion dur="1.6s" repeatCount="indefinite" begin="0.7s"><mpath href="#p3"/></animateMotion></circle>
-        <circle r="4" fill="#0D9488" filter="url(#dotglow)"><animateMotion dur="1.6s" repeatCount="indefinite" begin="1.5s"><mpath href="#p3"/></animateMotion></circle>
-
+        <circle r="4" fill="#5ED3F7" filter="url(#dotglow)"><animateMotion dur="1.8s" repeatCount="indefinite" begin="0s"><mpath href="#p1"/></animateMotion></circle>
+        <circle r="4" fill="#5ED3F7" filter="url(#dotglow)"><animateMotion dur="1.8s" repeatCount="indefinite" begin="0.9s"><mpath href="#p1"/></animateMotion></circle>
+        <circle r="4" fill="#5ED3F7" filter="url(#dotglow)"><animateMotion dur="1.6s" repeatCount="indefinite" begin="0.35s"><mpath href="#p2"/></animateMotion></circle>
+        <circle r="4" fill="#5ED3F7" filter="url(#dotglow)"><animateMotion dur="1.6s" repeatCount="indefinite" begin="1.15s"><mpath href="#p2"/></animateMotion></circle>
+        <circle r="4" fill="#2BA6F0" filter="url(#dotglow)"><animateMotion dur="1.6s" repeatCount="indefinite" begin="0.7s"><mpath href="#p3"/></animateMotion></circle>
+        <circle r="4" fill="#2BA6F0" filter="url(#dotglow)"><animateMotion dur="1.6s" repeatCount="indefinite" begin="1.5s"><mpath href="#p3"/></animateMotion></circle>
         <circle r="4" fill="#38BDF8" filter="url(#dotglow)"><animateMotion dur="2s" repeatCount="indefinite" begin="1.05s"><mpath href="#p4"/></animateMotion></circle>
         <circle r="4" fill="#A78BFA" filter="url(#dotglow)"><animateMotion dur="2s" repeatCount="indefinite" begin="1.2s"><mpath href="#pAI"/></animateMotion></circle>
         <circle r="4" fill="#F6C445" filter="url(#dotglow)"><animateMotion dur="2s" repeatCount="indefinite" begin="1.05s"><mpath href="#p5"/></animateMotion></circle>
-
         <g>
           <rect x="20" y="110" width="150" height="70" rx="10" fill="#1B2027" stroke="#333B44" stroke-width="1.5"/>
-          <text x="95" y="138" text-anchor="middle" font-family="var(--mono)" font-size="11" font-weight="700" fill="#FFFFFF">Shodwe</text>
-          <text x="95" y="153" text-anchor="middle" font-family="var(--mono)" font-size="11" font-weight="700" fill="#FFFFFF">Hotel PMS</text>
-          <text x="95" y="169" text-anchor="middle" font-family="var(--mono)" font-size="8" fill="#6D7680">bookings · rooms · rates</text>
+          <text x="95" y="136" text-anchor="middle" font-family="var(--mono)" font-size="11" font-weight="700" fill="#FFFFFF">Shodwe PMS</text>
+          <text x="95" y="151" text-anchor="middle" font-family="var(--mono)" font-size="11" font-weight="700" fill="#FFFFFF">&amp; OTAs</text>
+          <text x="95" y="168" text-anchor="middle" font-family="var(--mono)" font-size="8" fill="#6D7680">bookings · capacity · ratings</text>
         </g>
-
         <g>
           <rect x="225" y="110" width="140" height="70" rx="10" fill="#1B2027" stroke="#333B44" stroke-width="1.5"/>
           <ellipse cx="295" cy="132" rx="18" ry="6" fill="none" stroke="#B7C0C6" stroke-width="1.8"/>
           <path d="M277 132 V150 A18 6 0 0 0 313 150 V132" fill="none" stroke="#B7C0C6" stroke-width="1.8"/>
           <text x="295" y="167" text-anchor="middle" font-family="var(--mono)" font-size="10.5" font-weight="700" fill="#FFFFFF">Source DB</text>
         </g>
-
         <g>
-          <rect x="420" y="90" width="160" height="110" rx="10" fill="#1E2A28" stroke="var(--teal)" stroke-width="1.75"/>
-          <text x="500" y="118" text-anchor="middle" font-family="var(--mono)" font-size="12.5" font-weight="700" fill="#7FD9BE">ETL</text>
+          <rect x="420" y="90" width="160" height="110" rx="10" fill="#15253A" stroke="#2BA6F0" stroke-width="1.75"/>
+          <text x="500" y="118" text-anchor="middle" font-family="var(--mono)" font-size="12.5" font-weight="700" fill="#5ED3F7">ETL</text>
           <text x="500" y="141" text-anchor="middle" font-family="var(--mono)" font-size="10" fill="#DDE4E2">Extract</text>
           <text x="500" y="158" text-anchor="middle" font-family="var(--mono)" font-size="10" fill="#DDE4E2">Transform</text>
           <text x="500" y="175" text-anchor="middle" font-family="var(--mono)" font-size="10" fill="#DDE4E2">Load</text>
         </g>
-
         <g>
-          <rect x="635" y="75" width="180" height="140" rx="10" fill="#1B222E" stroke="#0D9488" stroke-width="1.75"/>
-          <ellipse cx="725" cy="113" rx="34" ry="11" fill="none" stroke="#5FC4B8" stroke-width="2"/>
-          <path d="M691 113 V150 A34 11 0 0 0 759 150 V113" fill="none" stroke="#5FC4B8" stroke-width="2"/>
-          <path d="M691 131 A34 11 0 0 0 759 131" fill="none" stroke="#5FC4B8" stroke-width="1.4" opacity="0.5"/>
-          <text x="725" y="175" text-anchor="middle" font-family="var(--mono)" font-size="11.5" font-weight="700" fill="#FFFFFF">Data Warehouse</text>
+          <rect x="635" y="75" width="180" height="140" rx="10" fill="#1B222E" stroke="#1677D2" stroke-width="1.75"/>
+          <ellipse cx="725" cy="113" rx="34" ry="11" fill="none" stroke="#5ED3F7" stroke-width="2"/>
+          <path d="M691 113 V150 A34 11 0 0 0 759 150 V113" fill="none" stroke="#5ED3F7" stroke-width="2"/>
+          <path d="M691 131 A34 11 0 0 0 759 131" fill="none" stroke="#5ED3F7" stroke-width="1.4" opacity="0.5"/>
+          <text x="725" y="175" text-anchor="middle" font-family="var(--mono)" font-size="11.5" font-weight="700" fill="#FFFFFF">Hotel Data Mart</text>
           <text x="725" y="192" text-anchor="middle" font-family="var(--mono)" font-size="9" fill="#8FA6C4">vw_hotel_booking_analysis</text>
         </g>
-
         <g>
           <rect x="870" y="15" width="170" height="80" rx="10" fill="#132430" stroke="#38BDF8" stroke-width="1.75"/>
           <image href="assets/tableau-icon.png" x="939" y="24" width="32" height="32"/>
           <text x="955" y="73" text-anchor="middle" font-family="var(--mono)" font-size="11.5" font-weight="700" fill="#FFFFFF">Tableau</text>
         </g>
-
-        <!-- AI / Insights layer -->
         <g>
           <rect x="870" y="110" width="170" height="80" rx="10" fill="#221A2E" stroke="#A78BFA" stroke-width="1.75"/>
-          <line x1="955" y1="123" x2="955" y2="129" stroke="#A78BFA" stroke-width="2"/>
-          <circle cx="955" cy="120" r="3" fill="#A78BFA"/>
+          <line x1="955" y1="123" x2="955" y2="129" stroke="#A78BFA" stroke-width="2"/><circle cx="955" cy="120" r="3" fill="#A78BFA"/>
           <rect x="936" y="129" width="38" height="30" rx="8" fill="none" stroke="#A78BFA" stroke-width="2"/>
-          <circle cx="946" cy="144" r="3.2" fill="#A78BFA"/>
-          <circle cx="964" cy="144" r="3.2" fill="#A78BFA"/>
+          <circle cx="946" cy="144" r="3.2" fill="#A78BFA"/><circle cx="964" cy="144" r="3.2" fill="#A78BFA"/>
           <rect x="945" y="151" width="20" height="3" rx="1.5" fill="#A78BFA"/>
-          <line x1="931" y1="137" x2="936" y2="137" stroke="#A78BFA" stroke-width="2"/>
-          <line x1="974" y1="137" x2="979" y2="137" stroke="#A78BFA" stroke-width="2"/>
+          <line x1="931" y1="137" x2="936" y2="137" stroke="#A78BFA" stroke-width="2"/><line x1="974" y1="137" x2="979" y2="137" stroke="#A78BFA" stroke-width="2"/>
           <text x="955" y="178" text-anchor="middle" font-family="var(--mono)" font-size="11.5" font-weight="700" fill="#FFFFFF">AI / Insights</text>
         </g>
-
         <g>
           <rect x="870" y="205" width="170" height="80" rx="10" fill="#241F14" stroke="var(--yellow)" stroke-width="1.75"/>
-          <rect x="939" y="228" width="9" height="24" fill="#F6C445"/>
-          <rect x="951" y="219" width="9" height="33" fill="#F6C445"/>
-          <rect x="963" y="235" width="9" height="17" fill="#F6C445"/>
+          <rect x="939" y="228" width="9" height="24" fill="#F6C445"/><rect x="951" y="219" width="9" height="33" fill="#F6C445"/><rect x="963" y="235" width="9" height="17" fill="#F6C445"/>
           <text x="955" y="273" text-anchor="middle" font-family="var(--mono)" font-size="11.5" font-weight="700" fill="#FFFFFF">Power BI</text>
         </g>
       </svg>
-      <p class="pipeline-caption-dark">Live-flowing reference, not a literal animation of your data — but this is the real path: nothing reaches Tableau, Power BI, or the AI/insights layer except through the warehouse, and nothing reaches the warehouse except through ETL.</p>
+      <p class="pipeline-caption-dark">Live-flowing reference, not a literal animation of your data. But this is the real path: nothing reaches Tableau, Power BI, or the AI/insights layer except through the warehouse, and nothing reaches the warehouse except through ETL.</p>
       <div class="pipeline-legend">
-        <span><i style="background:#7FD9BE"></i>Extract → ETL</span>
-        <span><i style="background:#0D9488"></i>Load → Warehouse</span>
+        <span><i style="background:#5ED3F7"></i>Extract → ETL</span>
+        <span><i style="background:#2BA6F0"></i>Load → Warehouse</span>
         <span><i style="background:#38BDF8"></i>Connect → Tableau</span>
         <span><i style="background:#F6C445"></i>Connect → Power BI</span>
         <span><i style="background:#A78BFA"></i>Connect → AI / Insights</span>
@@ -256,34 +292,33 @@
       </div>
     </div>
     <div class="card mt-16" style="padding:24px;">
-      <h4 style="font-size:15px;margin-bottom:10px;">What kind of data a hotel booking system actually generates</h4>
+      <h4 style="font-size:15px;margin-bottom:10px;">What kind of data a hotel group actually generates</h4>
       <div class="tag-cloud" id="domain-data"></div>
-      <p style="font-size:13.8px;color:var(--ink-muted);margin-top:14px;">This capstone's 5 tables are a simplified, analytics-ready shape of exactly this kind of real-world hospitality data.</p>
+      <p style="font-size:13.8px;color:var(--ink-muted);margin-top:14px;">This capstone's 5 tables are an analytics-ready shape of exactly this kind of hotel data.</p>
     </div>
 
     <div class="section-head mt-40">
       <div class="eyebrow">Project Documents</div>
-      <h2>Download the Excel starter template</h2>
-      <p>A ready-to-use workbook with live SUMIFS/COUNTIFS formulas for the core booking and revenue KPIs — paste your export into Raw_Data and the Dashboard tab updates itself.</p>
+      <h2>Download the source documents</h2>
+      <p>A ready-to-use Excel starter with live formulas for booking volume, cancellation %, realisation %, ADR and average rating. The full dataset is shared separately by your trainer.</p>
     </div>
     <div class="doc-grid" id="doc-grid"></div>
 
     <div class="section-head mt-40">
       <div class="eyebrow">Get Set Up</div>
       <h2>Install the tools, then load the data</h2>
-      <p>Before you touch a dashboard: get Tableau and Power BI installed, and get the dataset loaded into MySQL so both tools have a real source to connect to.</p>
+      <p>Before you touch a dashboard: get Tableau and Power BI installed, and get all 5 tables loaded into MySQL so both tools have a real source to connect to.</p>
     </div>
-    <div class="setup-grid">
-      <div class="card analyst-illustration-card">
-        <img class="analyst-illustration" src="assets/setup-infographic.jpg" alt="Install the Tools, then Load the Data — step-by-step infographic for Tableau, Power BI, MySQL and Excel">
-      </div>
-      <div class="doc-grid" id="software-grid"></div>
+    <div class="card illustration-card mt-16" style="padding:0;overflow:hidden;"><img src="assets/setup-infographic.jpg" alt="Install the tools, then load the data — step-by-step infographic" style="width:100%;height:auto;display:block;"></div>
+    <div style="display:none;">
     </div>
+    <div class="setup-steps" id="setup-steps"></div>
+    <div class="doc-grid mt-16" id="software-grid"></div>
 
     <div class="section-head mt-40">
       <div class="eyebrow">Workflow</div>
       <h2>Five stages, one dataset</h2>
-      <p>The build order matters — each stage is graded on what the previous one produced.</p>
+      <p>The build order matters. Each stage is graded on what the previous one produced.</p>
     </div>
     <div class="flow card" id="flow-grid" style="padding:8px;"></div>
 
@@ -295,51 +330,104 @@
   </div>
 </section>
 
+<!-- ===================== MY PROGRESS ===================== -->
+<section class="view" id="view-progress">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Your Progress</div>
+      <h2>How far along is your project?</h2>
+      <p>Calculated from the journey steps, deliverables, assignments, interview questions and pitch practice you've completed on this device.</p>
+    </div>
+    <div class="two-col">
+      <div class="card" style="padding:24px;">
+        <div class="progress-mini" style="padding:0;" id="progress-overall"></div>
+        <div class="track-list mt-16" id="track-list"></div>
+      </div>
+      <div class="card" style="padding:24px;">
+        <h4 style="font-size:15px;margin-bottom:10px;">Checklist: what's still open</h4>
+        <div id="progress-todo" style="font-size:13.5px;color:var(--ink-muted);"></div>
+        <div class="cert-box" id="cert-box"></div>
+        <div style="margin-top:18px;"><button class="reset-link" id="reset-progress">Reset all my progress on this device</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PROBLEM & BUSINESS QUESTIONS ===================== -->
+<section class="view" id="view-problem">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Business Problem</div>
+      <h2>Problem Statement</h2>
+      <p>Shodwe Group, a big-sized hospitality chain with properties across India, was struggling with fragmented and delayed reporting. <em>"We were making decisions reactively, not proactively." — Hotel Revenue Manager, Shodwe Group.</em></p>
+    </div>
+    <div class="card mb-16" style="padding:0;overflow:hidden;margin-bottom:16px;"><img src="assets/problem-statement.png" alt="Shodwe problem statement visual" class="zoomable" style="width:100%;height:auto;display:block;cursor:zoom-in;"></div>
+    <div class="rule-grid" id="problem-grid"></div>
+
+    <div class="section-head mt-40">
+      <div class="eyebrow">💼 Questions a Business Manager Would Ask</div>
+      <h2>Start from the business question, not from the chart</h2>
+      <p>Every analysis on this project follows the same chain. Open a question to see how a data analyst actually works it end to end, with the real numbers from this dataset.</p>
+    </div>
+    <div class="chain-legend"><span class="k">Question</span>→<span class="k">Data</span>→<span class="k">KPI</span>→<span class="k">Analysis</span>→<span class="k">Insight</span>→<span class="k">Recommendation</span></div>
+    <div id="bq-list"></div>
+
+    <div class="section-head mt-40">
+      <div class="eyebrow">Requirements</div>
+      <h2>What the stakeholders asked for (BRD summary)</h2>
+      <p>The requirement each dashboard page must answer. Reviewers grade you against this list.</p>
+    </div>
+    <div class="card table-scroll"><table class="dtable" id="req-table"></table></div>
+
+    <div class="section-head mt-40">
+      <div class="eyebrow">Before vs After</div>
+      <h2>The change this project delivers</h2>
+    </div>
+    <div class="ba-grid" id="before-after-2"></div>
+  </div>
+</section>
+
 <!-- ===================== RULES & REGULATIONS ===================== -->
 <section class="view" id="view-rules">
   <div class="wrap">
     <div class="section-head">
       <div class="eyebrow">Project Rules &amp; Regulations</div>
       <h2>Participation guidelines for this capstone</h2>
-      <p>Same rules that apply to your project group — read them once so nothing here surprises you mid-course.</p>
+      <p>Same rules that apply to your project group. Read them once so nothing here surprises you mid-course.</p>
     </div>
     <div class="rule-grid" id="rule-grid"></div>
-
     <div class="section-head mt-40">
       <div class="eyebrow">Team Focus Areas</div>
       <h2>What "good participation" looks like week to week</h2>
     </div>
     <div class="tip-grid" id="focus-grid"></div>
-
     <div class="callout mt-40">
       <h4>Why this tab exists in an interview-prep hub</h4>
-      <p>"How do you handle a teammate who isn't contributing?" and "tell me about a conflict on a project team" are standard behavioral questions — this policy is the real situation you can draw the honest answer from.</p>
+      <p>"How do you handle a teammate who isn't contributing?" and "tell me about a conflict on a project team" are standard behavioral questions. This policy is the real situation you can draw the honest answer from.</p>
     </div>
   </div>
 </section>
 
-<!-- ===================== KPI LIST ===================== -->
-<section class="view" id="view-kpis">
+<!-- ===================== DATASET ===================== -->
+<section class="view" id="view-dataset">
   <div class="wrap">
     <div class="section-head">
-      <div class="eyebrow">KPI List</div>
-      <h2>All 26 KPIs &amp; DAX measures — what each one means, and the logic behind it</h2>
-      <p>Filter by group. Each card gives the plain-English description first, then the exact DAX formula from the project's metrics register — know both, because interviewers ask for the "why" as often as the formula.</p>
+      <div class="eyebrow">Dataset</div>
+      <h2>5 tables, two fact grains, one hotel data mart</h2>
+      <p>The full dataset (5 CSV/XLSX files) is shared separately by your trainer. This page tells you what's inside before you open it.</p>
     </div>
-    <div class="filter-bar">
-      <input class="search-input" id="kpi-search" type="text" placeholder="Search KPIs — e.g. &quot;occupancy&quot;, &quot;RevPAR&quot;, &quot;cancellation&quot;…">
-      <button class="pill starred-only-pill" id="kpi-starred-toggle">★ Starred only</button>
+    <div class="disclaimer-box" style="margin-bottom:16px;"><strong>🎓 Training data.</strong> fact_bookings has 10 extra columns not in the metadata (customer_id, payment_method, stay_duration, cancellation_reason, is_loyalty_member, country, customer_age, special_requests, discount_applied, booking_channel). Validate before you use them, and keep guest-level fields out of public dashboards.</div>
+    <div class="callout">
+      <h4>Coverage and grain: read this before you calculate anything</h4>
+      <p id="coverage-text"></p>
     </div>
-    <div class="filter-bar" id="kpi-pills"></div>
-    <div class="kpi-grid" id="kpi-grid"></div>
-
-    <div class="quiz-launch-card" style="margin-top:24px;">
-      <div>
-        <h4>🎴 Flashcard Quiz Mode</h4>
-        <p>Flip through every KPI, hide the formula, self-grade "Got it" or "Review again" — same drill mode as Interview Prep, applied to the KPI list.</p>
-      </div>
-      <button id="kpi-quiz-launch-btn">Start Quiz</button>
+    <div class="ds-grid mt-16" id="ds-grid"></div>
+    <div class="section-head mt-40">
+      <div class="eyebrow">Hidden business story</div>
+      <h2>What the booking data is really saying</h2>
+      <p>Five patterns sit in this data. Finding and explaining them is your job.</p>
     </div>
+    <div class="card table-scroll"><table class="dtable" id="story-table"></table></div>
   </div>
 </section>
 
@@ -349,63 +437,64 @@
     <div class="section-head">
       <div class="eyebrow">Data Model</div>
       <h2>Two fact tables at two different grains</h2>
-      <p>fact_bookings (one row per booking) and fact_aggregated_bookings (one row per property × date × room-type) join back together on a 3-column composite key — that asymmetry is worth naming precisely in an interview.</p>
+      <p>fact_bookings (one row per booking) and fact_aggregated_bookings (one row per property × date × room type) share three dimensions and meet on a 3-column composite key. That asymmetry is worth naming precisely in an interview.</p>
     </div>
-
+    <div class="card mt-16" style="padding:0;overflow:hidden;"><img src="assets/schema-diagram.png" alt="Shodwe schema — fact_bookings, fact_aggregated_bookings, dim_hotels, dim_rooms, dim_date" id="model-img" style="width:100%;height:auto;display:block;cursor:zoom-in;"></div>
+    <p style="font-size:12px;color:var(--ink-muted);margin-top:8px;">Click the diagram to enlarge it.</p>
+    <div class="section-head mt-40"><div class="eyebrow">Reference schema</div><h2>The interactive version</h2></div>
     <div class="model-grid">
-      <div class="card">
-        <div class="schema" id="schema-grid"></div>
-      </div>
+      <div class="card"><div class="schema" id="schema-grid"></div></div>
       <div class="card rel-list" id="rel-list"></div>
     </div>
 
     <div class="card mt-40" style="padding:22px;">
-      <h4 style="font-size:15px;margin-bottom:10px;">Global filters (apply across the dashboard's visuals)</h4>
+      <h4 style="font-size:15px;margin-bottom:10px;">Global filters (slicers that apply across every page)</h4>
       <div id="global-filters" style="font-size:13.5px;color:var(--ink-muted);"></div>
     </div>
-
     <div class="two-col mt-40">
       <div class="card" style="padding:22px;">
         <h4 style="font-size:15px;margin-bottom:10px;">Load order (Power BI / Tableau)</h4>
         <div id="load-order" style="font-size:13.5px;color:var(--ink-muted);"></div>
       </div>
       <div class="card" style="padding:22px;">
-        <h4 style="font-size:15px;margin-bottom:10px;">Expected nulls &amp; quirks — not errors</h4>
-        <div id="null-notes" style="font-size:13.5px;color:var(--ink-muted);"></div>
+        <h4 style="font-size:15px;margin-bottom:10px;">Calculated fields to add in the SQL database / BI tool</h4>
+        <div id="calc-fields" style="font-size:13.5px;color:var(--ink-muted);"></div>
       </div>
     </div>
-
-    <div class="card mt-40" style="padding:22px;">
-      <h4 style="font-size:15px;margin-bottom:10px;">Calculated fields to add in the BI tool</h4>
-      <div id="calc-fields" style="font-size:13.5px;color:var(--ink-muted);"></div>
-    </div>
-
     <div class="card mt-40" style="padding:22px;">
       <h4 style="font-size:15px;margin-bottom:10px;">⚠️ Gotchas &amp; Interview Traps</h4>
-      <p style="font-size:13px;color:var(--ink-muted);margin-bottom:14px;">The specific traps interviewers ask about most in this dataset — know these cold.</p>
+      <p style="font-size:13px;color:var(--ink-muted);margin-bottom:14px;">The specific traps interviewers ask about most in this model. Know these cold.</p>
       <div id="gotchas-list" class="gotchas-grid"></div>
     </div>
-
+    <div class="section-head mt-40">
+      <div class="eyebrow">Watch out for this</div>
+      <h2>Common QA mistakes on this project's KPIs</h2>
+    </div>
+    <div class="qa-mistakes card" style="padding:20px 22px;">
+      <h4 style="font-size:15px;margin-bottom:8px;">Before you sign off on any KPI card or chart, check for these</h4>
+      <ul style="font-size:13.5px;color:var(--ink-muted);padding-left:18px;margin:0;">
+        <li><strong>Revenue = SUM(revenue_realized)</strong>, never revenue_generated: cancelled bookings keep only 60%.</li>
+        <li><strong>Occupancy and RevPAR take capacity from fact_aggregated_bookings</strong>: summing capacity after joining to bookings repeats it on every booking row.</li>
+        <li><strong>Weekend = Friday + Saturday</strong> (stakeholder rule), not Saturday + Sunday.</li>
+        <li><strong>Mix % measures need ALL()</strong> in the denominator, or every row shows 100%.</li>
+        <li><strong>Average Rating skips blanks</strong>: show coverage (42.1% of bookings) next to it.</li>
+        <li><strong>WoW measures need the wn column</strong>, and week 1 has no prior week.</li>
+        <li>Reconcile every KPI against the equivalent SQL query before presenting.</li>
+      </ul>
+    </div>
     <div class="section-head mt-40">
       <div class="eyebrow">Join Guide</div>
-      <h2>Every join you need for Power BI / Tableau, in one place</h2>
-      <p>The exact table-to-table joins to build in the model view — copy this straight into your relationship setup.</p>
+      <h2>Every relationship you need, in one place</h2>
+      <p>The exact table-to-table joins to build in the model view. Relate both facts to the shared dimensions; join the two facts only on the full composite key.</p>
     </div>
-    <div class="card table-scroll join-table-wrap">
-      <table class="dtable" id="join-guide-table"></table>
-    </div>
-    <div class="card table-scroll join-table-wrap">
-      <table class="dtable" id="join-paths-table"></table>
-    </div>
-
+    <div class="card table-scroll join-table-wrap"><table class="dtable" id="join-guide-table"></table></div>
+    <div class="card table-scroll join-table-wrap mt-16"><table class="dtable" id="join-paths-table"></table></div>
     <div class="section-head mt-40">
       <div class="eyebrow">Dashboard Spec</div>
       <h2>One dashboard, one audience</h2>
-      <p>Who reads this, and what decision does it drive — a favorite interview probe.</p>
+      <p>Who reads this, and what decision does it drive? A favourite interview probe.</p>
     </div>
-    <div class="card table-scroll">
-      <table class="dtable" id="dash-table"></table>
-    </div>
+    <div class="card table-scroll"><table class="dtable" id="dash-table"></table></div>
   </div>
 </section>
 
@@ -414,75 +503,320 @@
   <div class="wrap">
     <div class="section-head">
       <div class="eyebrow">Data Dictionary</div>
-      <h2>Every column, every table — straight from the source files</h2>
-      <p>Pulled directly from the workbook's own sheets and the provided metadata file. This is the reference you should have open the first time you touch the real files — know every column's type and meaning before you write a single query, including the 10 columns fact_bookings carries that the metadata file never documented.</p>
+      <h2>Every column, table by table</h2>
+      <p>Every column in the 5 source files, with type, meaning and quirks.</p>
     </div>
     <div class="filter-bar">
-      <input class="search-input" id="dd-search" type="text" placeholder="Search columns — e.g. &quot;revenue&quot;, &quot;status&quot;, &quot;capacity&quot;…">
+      <input class="search-input" id="dd-search" type="text" placeholder="Search columns — e.g. &quot;revenue&quot;, &quot;capacity&quot;, &quot;rating&quot;…">
     </div>
+    <div class="filter-bar" id="dd-pills"></div>
     <div id="datadict-tables"></div>
   </div>
 </section>
 
-<!-- ===================== SAMPLE DASHBOARDS ===================== -->
-<section class="view" id="view-dashboards">
+<!-- ===================== DATA QUALITY ===================== -->
+<section class="view" id="view-quality">
   <div class="wrap">
     <div class="section-head">
-      <div class="eyebrow">Sample Dashboards</div>
-      <h2>What the KPI numbers look like on screen</h2>
-      <p>Computed directly from the real ~134,590-row dataset — these are the actual numbers your SQL and BI builds should reproduce. Worth noting going in: Occupancy % (57.9%) and Realisation % (70.2%) look like they should be close but measure entirely different things — one is capacity utilization, the other is booking-to-stay conversion — and that's exactly the kind of distinction a good dashboard makes unmistakable.</p>
+      <div class="eyebrow">Data Quality</div>
+      <h2>Expected blanks, quirks and the checks to run before modelling</h2>
+      <p>Real hotel data is never perfectly clean. Know which "issues" are by design and which would be genuine defects.</p>
     </div>
-    <div class="card" style="padding:0;overflow:hidden;margin-bottom:20px;">
-      <img src="assets/dashboard-sample.png" alt="Hotel Management Booking Overview dashboard sample — hotel count, profits, rooms, bookings KPI cards, top booked hotels, room availability by city, booked and availability by room type, profits by month, customer type donut" style="width:100%;height:auto;display:block;">
+    <div class="card" style="padding:22px;">
+      <h4 style="font-size:15px;margin-bottom:10px;">Expected nulls &amp; quirks (not errors)</h4>
+      <div id="null-notes" style="font-size:13.5px;color:var(--ink-muted);"></div>
     </div>
-    <div id="dashboard-mocks"></div>
+    <div class="section-head mt-40">
+      <div class="eyebrow">Data Quality Rules</div>
+      <h2>Your cleaning &amp; validation checklist</h2>
+    </div>
+    <div class="card table-scroll"><table class="dtable" id="dq-table"></table></div>
   </div>
 </section>
 
-<!-- ===================== SQL & QA LAB ===================== -->
+<!-- ===================== KPI LIBRARY ===================== -->
+<section class="view" id="view-kpis">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">KPI Library</div>
+      <h2>All 26 KPIs &amp; DAX measures: the question, the logic and the answer key</h2>
+      <p>Filter by dashboard. Each card gives the business question first, then the logic, the formula and a DAX measure, plus the value your dashboard should show (computed from the real dataset, blank rows excluded).</p>
+    </div>
+    <div class="kpi-roadmap">
+      <div class="kr-step kr-p1"><div class="kr-t">P1 · Must know</div><div class="kr-n" id="kr-p1"></div><p>Build these first. They sit on the KPI cards of both dashboards and come up in every interview.</p></div>
+      <div class="kr-arrow">→</div>
+      <div class="kr-step kr-p2"><div class="kr-t">P2 · Important</div><div class="kr-n" id="kr-p2"></div><p>Add once P1 reconciles to SQL: status counts, no-show rate, capacity, successful bookings, mix %.</p></div>
+      <div class="kr-arrow">→</div>
+      <div class="kr-step kr-p3"><div class="kr-t">P3 · Advanced</div><div class="kr-n" id="kr-p3"></div><p>Daily room nights and the six week-over-week measures.</p></div>
+    </div>
+    <div class="callout-yellow" style="margin:0 0 16px;"><strong>Don't build all 26 at once.</strong> Master the P1 KPIs first, get them to match the answer key, then move on.</div>
+    <div class="filter-bar" id="kpi-tier-pills"></div>
+    <div class="filter-bar">
+      <input class="search-input" id="kpi-search" type="text" placeholder="Search KPIs — e.g. &quot;occupancy&quot;, &quot;RevPAR&quot;, &quot;cancellation&quot;…">
+      <button class="pill starred-only-pill" id="kpi-starred-toggle">★ Starred only</button>
+      <button type="button" class="pill" id="print-cheatsheet-btn">🖨️ Print one-page KPI cheat sheet</button>
+    </div>
+    <div class="filter-bar" id="kpi-pills"></div>
+    <div class="kpi-grid" id="kpi-grid"></div>
+    <div class="section-head mt-40">
+      <div class="eyebrow">Interview Trap</div>
+      <h2>Key difference: ADR vs. RevPAR vs. Occupancy</h2>
+      <p>Three numbers that move together but answer different questions. Mixing them up is the most common hotel-metrics mistake in interviews.</p>
+    </div>
+    <div class="card table-scroll">
+      <table class="dtable">
+        <thead><tr><th>Metric</th><th>Formula (this project)</th><th>What it measures</th><th>Shodwe value</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Occupancy %</strong></td><td>Successful bookings ÷ capacity</td><td>How full the hotels are.</td><td>57.9%</td></tr>
+          <tr><td><strong>ADR</strong></td><td>Revenue ÷ total bookings</td><td>Average revenue per booking (industry ADR uses room nights).</td><td>$12,696</td></tr>
+          <tr><td><strong>RevPAR</strong></td><td>Revenue ÷ capacity</td><td>Revenue per available room: price and occupancy in one number. Always ≤ ADR when occupancy &lt; 100%.</td><td>$7,347</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="quiz-launch-card" style="margin-top:24px;">
+      <div><h4>🎴 Flashcard Quiz Mode</h4><p>Flip through every KPI, hide the logic, then self-grade "Got it" or "Review again".</p></div>
+      <button id="kpi-quiz-launch-btn">Start Quiz</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SQL LAB ===================== -->
 <section class="view" id="view-sql">
   <div class="wrap">
     <div class="section-head">
-      <div class="eyebrow">SQL &amp; QA Lab</div>
-      <h2>The validation queries you'll be asked to reproduce</h2>
-      <p>Run these against your own SQL build and reconcile the output with your Tableau/Power BI numbers before the review meeting — QA rounds start right here.</p>
+      <div class="eyebrow">SQL Lab</div>
+      <h2>The queries this project is built on (MySQL)</h2>
+      <p>From loading and exploring the data to KPI queries and the mart view. Every expected value in the comments comes from the real dataset, so if yours differs, something in your load or logic is off.</p>
     </div>
+    <div class="practice-bar"><div><strong>🎯 Practice mode</strong><span>Hide the SQL so you try first: read the task, write your query, use the hint, then reveal the solution and compare results.</span></div><button class="btn-blue" id="sql-practice-toggle">Turn practice mode ON</button></div>
+    <div class="filter-bar" id="sql-pills"></div>
     <div id="sql-list"></div>
   </div>
 </section>
 
-<!-- ===================== INTERVIEW PREP ===================== -->
+<!-- ===================== EXCEL ANALYSIS ===================== -->
+<section class="view" id="view-excel">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Excel Analysis</div>
+      <h2>Stage 1: prove the numbers in Excel before you touch a database</h2>
+      <p>Excel is where you first meet the data. These are the formulas and pivots you're expected to build, and the starter template already does the first five for you.</p>
+    </div>
+    <div class="doc-grid" id="doc-grid-2"></div>
+    <div class="card table-scroll mt-16"><table class="dtable" id="excel-table"></table></div>
+    <div class="section-head mt-40">
+      <div class="eyebrow">Pivot practice</div>
+      <h2>Five pivots every student should build</h2>
+    </div>
+    <div class="tip-grid" id="pivot-grid"></div>
+  </div>
+</section>
+
+<!-- ===================== BUSINESS ANALYSIS ===================== -->
+<section class="view" id="view-analysis">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Business Analysis</div>
+      <h2>Where does Shodwe win, leak and earn?</h2>
+      <p>Booking outcomes, room-night use, city and category revenue, channel and room mix, and rating coverage. Group occupancy: <strong id="vol-base"></strong>.</p>
+    </div>
+    <div class="chart-grid" id="driver-grid"></div>
+    <div class="section-head mt-40">
+      <div class="eyebrow">Key insights &amp; recommendations</div>
+      <h2>The "so what?" leadership actually wants</h2>
+      <p>Not just what the numbers are, but what to do about them.</p>
+    </div>
+    <div class="insights-grid" id="insights-grid"></div>
+  </div>
+</section>
+
+<!-- ===================== DASHBOARD GALLERY ===================== -->
+<section class="view" id="view-dashboards">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">📊 Dashboard Gallery</div>
+      <h2>Two dashboards, four pages: the portfolio you're building</h2>
+      <p>The Booking &amp; Occupancy dashboard: an overview page plus three drill-through pages. Each card opens the target layout computed directly from the dataset: the KPI values and chart data your Tableau and Power BI builds should reproduce, with build notes for both tools.</p>
+    </div>
+    <div class="gallery-grid" id="gallery-grid"></div>
+    <div class="section-head mt-40">
+      <div class="eyebrow">Sample Dashboards from the industry</div>
+      <h2>Reference layouts, and what each one does</h2>
+      <p>Use these for layout inspiration only: build your own version with this project's KPIs. Click an image to enlarge it.</p>
+    </div>
+    <div class="sample-grid" id="sample-grid"></div>
+    <div class="section-head mt-40">
+      <div class="eyebrow">Which dashboard does what</div>
+      <h2>12 common hotel dashboards: click a name to see everything it does</h2>
+      <p>Each card explains the purpose, audience, KPIs, visuals and filters of a real-world hotel dashboard type, plus how to build it with the Shodwe tables, or what extra data you'd need.</p>
+    </div>
+    <div class="dash-acc-tools"><button class="btn-outline" id="acc-open-all">Expand all</button><button class="btn-outline" id="acc-close-all">Collapse all</button></div>
+    <div id="vidi-cards"></div>
+  </div>
+</section>
+
+<!-- ===================== QA ===================== -->
+<section class="view" id="view-qa">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">QA &amp; Reconciliation</div>
+      <h2>Prove that the dashboard and the database say the same thing</h2>
+      <p>QA rounds start here. Run these against your SQL build, then reconcile each output with your Tableau and Power BI numbers before the review meeting.</p>
+    </div>
+    <div id="qa-sql-list"></div>
+    <div class="section-head mt-40">
+      <div class="eyebrow">KPI Reconciliation</div>
+      <h2>The answer key: SQL vs Tableau vs Power BI</h2>
+      <p>Fill the last two columns with your own dashboard values. Anything that doesn't tie out within ±0.1 needs a root cause, not a tweak.</p>
+    </div>
+    <div class="card table-scroll"><table class="dtable" id="recon-table"></table></div>
+    <div class="section-head mt-40">
+      <div class="eyebrow">QA sign-off checklist</div>
+      <h2>Before you call the dashboard "done"</h2>
+    </div>
+    <div class="deliv-grid" id="qa-checklist"></div>
+  </div>
+</section>
+
+<!-- ===================== ASSIGNMENTS ===================== -->
+<section class="view" id="view-assignments">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">📝 Hands-on Assignments</div>
+      <h2>Do the work, check your answer, then compare with the solution</h2>
+      <p>Each assignment has three steps: <strong>View Task</strong> → <strong>Check Answer</strong> (type your result; it's validated against the real dataset) → <strong>Solution</strong>. Try before you peek, because the solution unlocks after your first attempt.</p>
+    </div>
+    <div class="lab-score" id="assign-score"></div>
+    <div id="assign-list"></div>
+  </div>
+</section>
+
+<!-- ===================== ANALYST THINKING LAB ===================== -->
+<section class="view" id="view-lab">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">🧠 Analyst Thinking Lab</div>
+      <h2>What would an analyst check first?</h2>
+      <p>Real hotel scenarios. Pick the move you'd make first, then read why. There's often more than one reasonable answer, but one is clearly the best first step.</p>
+    </div>
+    <div class="lab-score" id="lab-score"></div>
+    <div id="lab-list"></div>
+  </div>
+</section>
+
+<!-- ===================== INTERVIEW ===================== -->
 <section class="view" id="view-interview">
   <div class="wrap">
     <div class="section-head">
-      <div class="eyebrow">Interview Prep</div>
+      <div class="eyebrow">Interview Questions from This Project</div>
       <h2>Questions this project actually gets asked</h2>
-      <p>Grouped by round, including the "explain this project / what did you actually do" style questions that open almost every interview. Tap a question to expand the answer approach. Mark ones you've nailed to track progress (saved on this device).</p>
+      <p>Grouped by round: project, SQL, Power BI, Tableau, data modeling, hospitality domain, scenarios and hotel revenue management. Tap a question to expand the answer approach, and mark ones you've nailed to track progress.</p>
     </div>
-
-    <div class="quiz-launch-card">
+    <div class="section-head" style="margin-bottom:12px;"><div class="eyebrow">⚠️ Common Interview Traps</div><h3 style="font-size:20px;">The mistakes interviewers are listening for</h3></div>
+    <div class="trap-grid" id="trap-grid"></div>
+    <div class="quiz-launch-card mt-16">
       <div>
         <h4>🎴 Flashcard Quiz Mode</h4>
-        <p>Flip through questions one at a time, hide the answer, self-grade "Got it" or "Review again" — a faster way to drill than reading top to bottom.</p>
+        <p>Flip through questions one at a time, hide the answer, then self-grade. A faster way to drill than reading top to bottom.</p>
       </div>
       <button id="quiz-launch-btn">Start Quiz</button>
     </div>
-
     <div class="callout-yellow crackanalytics-cta">
       <div class="ca-text">
-        <strong>Want the full interview-prep library?</strong> This tab covers the project-specific questions. For 450+ real SQL, Power BI, Tableau, Excel and Data Science questions with full answers — organized by difficulty — head to <strong>CrackAnalytics</strong>, Mahendra's dedicated free prep course.
+        <strong>Want the full interview-prep library?</strong> This tab covers the project-specific questions. For 450+ real SQL, Power BI, Tableau, Excel and Data Science questions with full answers, organized by difficulty, head to <strong>CrackAnalytics</strong>.
       </div>
       <a class="btn-dark" href="https://www.crackanalytics.com/" target="_blank" rel="noopener">Open CrackAnalytics ↗</a>
     </div>
     <div class="progress-label"><span>Your progress</span><span id="progress-text">0 / 0 reviewed</span></div>
     <div class="progress-bar-outer"><div class="progress-bar-inner" id="progress-bar" style="width:0%;"></div></div>
-
     <div class="filter-bar">
       <input class="search-input" id="qa-search" type="text" placeholder="Search interview questions…">
       <button class="pill starred-only-pill" id="qa-starred-toggle">★ Starred only</button>
     </div>
     <div class="tabbar" id="qa-tabs"></div>
     <div id="qa-list"></div>
+    <div class="section-head mt-40">
+      <div class="eyebrow">References</div>
+      <h2>Where these questions come from</h2>
+      <p>The project questions are written for this dataset. DAX behaviour referenced in the answers can be checked in Microsoft's documentation below.</p>
+    </div>
+    <div class="learn-grid" id="qa-refs"></div>
+  </div>
+</section>
+
+<!-- ===================== 90-SEC PITCH ===================== -->
+<section class="view" id="view-pitch">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">🎤 Explain This Project in 90 Seconds</div>
+      <h2>The framework: eight beats, about ten seconds each</h2>
+      <p>"Tell me about your project" opens almost every interview. Hit these eight beats in order and you'll sound like someone who shipped it.</p>
+    </div>
+    <div class="pitch-flow" id="pitch-flow"></div>
+    <div class="section-head mt-40">
+      <div class="eyebrow">Sample answer</div>
+      <h2>Read it out loud until it sounds like you</h2>
+    </div>
+    <div class="card elevator-pitch-card">
+      <p id="elevator-pitch"></p>
+      <button type="button" class="copy-btn" id="copy-pitch-btn">📋 Copy pitch</button>
+    </div>
+    <div class="section-head mt-40">
+      <div class="eyebrow">Practice My Answer</div>
+      <h2>Type (or speak, then type) your own version against the clock</h2>
+    </div>
+    <div class="card practice-card">
+      <div class="timer-row">
+        <div class="timer" id="pitch-timer">1:30</div>
+        <button class="btn-blue" id="pitch-start">▶ Start 90-sec timer</button>
+        <button class="btn-outline" id="pitch-reset">Reset</button>
+      </div>
+      <textarea id="pitch-text" placeholder="Start with the business problem: “ShodweStay's revenue team only found out about lost revenue after the fact…”"></textarea>
+      <div class="pitch-meta" id="pitch-meta"></div>
+      <div class="pitch-checks" id="pitch-checks"></div>
+      <div class="copy-row"><button class="btn-dark" id="pitch-save">✓ Save &amp; mark practiced</button></div>
+    </div>
+    <div class="section-head mt-40">
+      <div class="eyebrow">5-Minute Project Presentation</div>
+      <h2>When they say "present your project"</h2>
+      <p>Seven slides, about five minutes. Build the deck in this order, using your own dashboard screenshots.</p>
+    </div>
+    <div class="pres-list" id="pres-list"></div>
+    <div class="section-head mt-40">
+      <div class="eyebrow">FAQ</div>
+      <h2>What if the interview doesn't go as scripted?</h2>
+    </div>
+    <div id="project-faq"></div>
+  </div>
+</section>
+
+<!-- ===================== CAREER ===================== -->
+<section class="view" id="view-career">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Resume Project</div>
+      <h2>Copy-ready resume description</h2>
+      <p>Paste this straight into the Projects section of your resume, then edit the bullets to match what <em>you</em> personally built.</p>
+    </div>
+    <div class="card resume-block" id="resume-block"></div>
+    <div class="section-head mt-40">
+      <div class="eyebrow">More bullet options</div>
+      <h2>Swap in the bullets that match your role on the team</h2>
+    </div>
+    <div id="resume-bullets"></div>
+    <div class="section-head mt-40">
+      <div class="eyebrow">LinkedIn</div>
+      <h2>Announce the project on LinkedIn</h2>
+    </div>
+    <div class="card elevator-pitch-card">
+      <p id="linkedin-post" style="white-space:pre-line;"></p>
+      <button type="button" class="copy-btn" id="copy-linkedin-btn">📋 Copy post</button>
+    </div>
+    <div class="section-head mt-40">
+      <div class="eyebrow">Portfolio</div>
+      <h2>Make it a portfolio piece</h2>
+    </div>
+    <div class="tip-grid" id="portfolio-grid"></div>
   </div>
 </section>
 
@@ -490,20 +824,14 @@
 <section class="view" id="view-glossary">
   <div class="wrap">
     <div class="section-head">
-      <div class="eyebrow">Extra · Glossary</div>
+      <div class="eyebrow">Glossary</div>
       <h2>Hospitality &amp; BI terms worth knowing cold</h2>
-      <p>The vocabulary interviewers assume you already have. If you can define every term on this page in one sentence, you're ahead of most candidates at your level.</p>
+      <p>The vocabulary interviewers assume you already have.</p>
     </div>
-    <div class="filter-bar">
-      <input class="search-input" id="gl-search" type="text" placeholder="Search terms — e.g. &quot;RevPAR&quot;, &quot;grain&quot;, &quot;ADR&quot;…">
-    </div>
+    <div class="filter-bar"><input class="search-input" id="gl-search" type="text" placeholder="Search terms — e.g. &quot;RevPAR&quot;, &quot;grain&quot;, &quot;ADR&quot;…"></div>
     <div class="gloss-grid" id="gloss-grid"></div>
-
     <div class="quiz-launch-card" style="margin-top:24px;">
-      <div>
-        <h4>🎴 Flashcard Quiz Mode</h4>
-        <p>Flip through every glossary term, hide the definition, self-grade "Got it" or "Review again".</p>
-      </div>
+      <div><h4>🎴 Flashcard Quiz Mode</h4><p>Flip through every glossary term, hide the definition, then self-grade.</p></div>
       <button id="gl-quiz-launch-btn">Start Quiz</button>
     </div>
   </div>
@@ -515,73 +843,30 @@
     <div class="section-head">
       <div class="eyebrow">Student Tips</div>
       <h2>What actually matters for a data analytics interview</h2>
-      <p>Distilled from recruiter-side patterns across Data Analyst / BA / BI interviews — the difference between reciting definitions and sounding like someone who has shipped a dashboard.</p>
+      <p>The difference between reciting definitions and sounding like someone who has shipped a dashboard.</p>
     </div>
     <div class="tip-grid" id="tip-grid"></div>
-
-    <div class="callout mt-40">
-      <h4>The one habit that separates candidates</h4>
-      <p id="tip-callout"></p>
-    </div>
-
+    <div class="callout mt-40"><h4>The one habit that separates candidates</h4><p id="tip-callout"></p></div>
     <div class="section-head mt-40">
       <div class="eyebrow">Weak vs Strong</div>
       <h2>See the difference a stronger answer makes</h2>
-      <p>Same question, two answers. The weak version isn't wrong — it's just thin. The strong version is what actually separates candidates.</p>
     </div>
     <div id="weak-strong-list"></div>
-
     <div class="callout mt-40" style="text-align:center;">
       <h4>Ready for the real thing?</h4>
-      <p style="margin-bottom:16px;">Print a one-page cheat sheet of every KPI and interview question you've starred (★) across this site — nothing unstarred, nothing you haven't chosen.</p>
+      <p style="margin-bottom:16px;">Print a one-page cheat sheet of every KPI and interview question you've starred (★).</p>
       <button class="cheatsheet-btn" id="cheatsheet-btn">🖨️ Print my starred cheat sheet</button>
     </div>
   </div>
 </section>
 
-<!-- ===================== INSIGHTS & RESUME ===================== -->
-<section class="view" id="view-insights">
-  <div class="wrap">
-    <div class="section-head">
-      <div class="eyebrow">Extra · Beyond the Mechanics</div>
-      <h2>Key insights &amp; recommendations</h2>
-      <p>Every other tab teaches you the KPIs, the schema, the SQL. This is the part that's usually missing from a student capstone — the "so what?" a real stakeholder actually wants: not just what the numbers are, but what to do about them.</p>
-    </div>
-    <div class="insights-grid" id="insights-grid"></div>
-
-    <div class="section-head mt-40">
-      <div class="eyebrow">For your resume</div>
-      <h2>Ready-to-use resume bullet points</h2>
-      <p>Copy one or more of these directly, or use them as a template for your own wording — the pattern is always outcome first, then method.</p>
-    </div>
-    <div id="resume-bullets"></div>
-
-    <div class="section-head mt-40">
-      <div class="eyebrow">Interview Prep</div>
-      <h2>The 2-minute elevator pitch</h2>
-      <p>Read this out loud a few times until it sounds like you, not a script. This is almost always the very first thing you'll be asked to give in an interview about this project.</p>
-    </div>
-    <div class="card elevator-pitch-card">
-      <p id="elevator-pitch"></p>
-      <button type="button" class="copy-btn" id="copy-pitch-btn">📋 Copy pitch</button>
-    </div>
-
-    <div class="section-head mt-40">
-      <div class="eyebrow">FAQ</div>
-      <h2>What if the interview doesn't go as scripted?</h2>
-      <p>The honest answers to the awkward follow-up questions students actually get asked about this project.</p>
-    </div>
-    <div id="project-faq"></div>
-  </div>
-</section>
-
-<!-- ===================== LEARN MORE / EXTERNAL LINKS ===================== -->
+<!-- ===================== LEARN MORE ===================== -->
 <section class="view" id="view-learnmore">
   <div class="wrap">
     <div class="section-head">
-      <div class="eyebrow">Extra · Learn More</div>
+      <div class="eyebrow">Learn More</div>
       <h2>Free official resources for every tool in this project</h2>
-      <p>Straight from the source — Tableau, Power BI, MySQL and Microsoft's own free training, plus a RevPAR/ADR explainer for the hospitality-specific metrics.</p>
+      <p>Straight from the source: Tableau, Power BI, MySQL and Microsoft's own free training, plus hotel-metrics explainers.</p>
     </div>
     <div class="learn-grid" id="learn-grid"></div>
   </div>
@@ -592,13 +877,13 @@
 <footer>
   <div class="wrap footer-inner">
     <div>
-      <div class="footer-brand"><img src="assets/excelr-logo.png" alt="ExcelR" class="footer-logo"> Shodwe Hospitality Analytics</div>
-      <div style="margin-top:4px;">Capstone reference hub — built from the metrics register, source tables and QA query set.</div>
+      <a href="#" class="footer-brand brand-home-link" style="text-decoration:none;color:inherit;"><img src="assets/favicon.png" alt="" class="footer-logo"> ShodweStay Hospitality Analytics Capstone</a>
+      <div style="margin-top:4px;">by Mahendra Singh · CrackAnalytics. Built for the ShodweStay Hospitality Analytics capstone; the dataset is for training use only.</div>
     </div>
     <div class="footer-links">
       <a href="https://www.linkedin.com/in/mahendra-singh-83699485/" target="_blank" rel="noopener">LinkedIn</a>
       <a href="https://medium.com/@mahendraa1188" target="_blank" rel="noopener">Medium</a>
-      <a href="#" id="youtube-link" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://www.youtube.com/channel/UC2q-vZWSlQpiGiMcSLUqnIg" id="youtube-link" target="_blank" rel="noopener">YouTube</a>
     </div>
   </div>
 </footer>
@@ -606,26 +891,22 @@
   </main>
 </div>
 
-<!-- ===================== ASK SIA — CHAT WIDGET ===================== -->
+<!-- ===================== ASK SIA ===================== -->
 <div class="chat-fab-wrap">
   <div class="chat-fab-label" id="chat-fab-label">Talk to SIA for more info</div>
-  <button class="chat-fab" id="chat-fab" aria-label="Talk to SIA">
-    <img src="assets/sia-avatar.png" alt="SIA" class="chat-fab-avatar">
-  </button>
+  <button class="chat-fab" id="chat-fab" aria-label="Talk to SIA"><img src="assets/sia-avatar.png" alt="SIA" class="chat-fab-avatar"></button>
 </div>
 <div class="chat-panel" id="chat-panel">
   <div class="chat-panel-head">
     <img src="assets/sia-avatar.png" alt="SIA" class="chat-panel-avatar">
     <div>
       <div class="chat-panel-title">SIA</div>
-      <div class="chat-panel-sub">Searches the KPI list, interview prep &amp; glossary on this site</div>
+      <div class="chat-panel-sub">Searches the KPIs, interview prep, data model &amp; glossary on this site</div>
     </div>
     <button class="chat-panel-close" id="chat-panel-close" aria-label="Close chat">✕</button>
   </div>
   <div class="chat-panel-body" id="chat-panel-body">
-    <div class="chat-msg bot">
-      <div class="chat-bubble">Hi, I'm SIA 👋 Ask me anything about this project — a KPI, a table, a formula, or an interview question. e.g. <em>"what is RevPAR"</em> or <em>"why two fact tables"</em>.</div>
-    </div>
+    <div class="chat-msg bot"><div class="chat-bubble">Hi, I'm SIA 👋 Ask me anything about this project: a KPI, a table, a formula, or an interview question. e.g. <em>"what is RevPAR"</em> or <em>"why Friday + Saturday weekend"</em>.</div></div>
   </div>
   <div class="chat-quick-replies" id="chat-quick-replies"></div>
   <form class="chat-panel-input" id="chat-panel-form">
@@ -634,30 +915,28 @@
   </form>
 </div>
 
-<!-- ===================== QUIZ / FLASHCARD MODE ===================== -->
+<!-- ===================== QUIZ ===================== -->
 <div class="quiz-overlay" id="quiz-overlay">
   <div class="quiz-modal">
-    <div class="quiz-modal-head">
-      <h4>🎴 Flashcard Quiz</h4>
-      <button class="quiz-close" id="quiz-close" aria-label="Close quiz">✕</button>
-    </div>
+    <div class="quiz-modal-head"><h4>🎴 Flashcard Quiz</h4><button class="quiz-close" id="quiz-close" aria-label="Close quiz">✕</button></div>
     <div id="quiz-body"></div>
   </div>
 </div>
 
+<!-- ===================== DASHBOARD / IMAGE MODAL ===================== -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-box"><button class="modal-close" id="modal-close" aria-label="Close">✕</button><div id="modal-body"></div></div>
+</div>
+
 <!-- ===================== COMMAND PALETTE ===================== -->
-<button class="cmdk-fab-hint" id="cmdk-fab-hint">🔎 Quick search <kbd id="cmdk-kbd-label">Ctrl K</kbd></button>
 <div class="cmdk-overlay" id="cmdk-overlay">
   <div class="cmdk-box">
-    <div class="cmdk-input-row">
-      <span>🔎</span>
-      <input type="text" id="cmdk-input" placeholder="Jump to a KPI, question, glossary term or tab…" autocomplete="off">
-      <span class="cmdk-hint">Esc</span>
-    </div>
+    <div class="cmdk-input-row"><span>🔎</span><input type="text" id="cmdk-input" placeholder="Jump to a KPI, question, glossary term or page…" autocomplete="off"><span class="cmdk-hint">Esc</span></div>
     <div class="cmdk-results" id="cmdk-results"></div>
   </div>
 </div>
 
+<script src="hosp-data.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
