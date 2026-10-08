@@ -6,7 +6,9 @@
 <title>ShodweStay Hospitality Analytics — Capstone, Practice & Interview Prep</title>
 <meta name="description" content="Hospitality analytics capstone hub for ShodweStay — learning roadmap, 5-table hotel booking dataset, two-grain data model, 26 KPIs with DAX, SQL & QA lab, assignments, analyst thinking lab, dashboard gallery, interview prep and resume.">
 <link rel="icon" type="image/png" href="assets/favicon.png">
-<link rel="stylesheet" href="styles.css">
+<meta http-equiv="Cache-Control" content="no-cache">
+<link rel="stylesheet" href="styles.css?v=20261007-hosp">
+<link rel="stylesheet" href="sim-kit.css?v=20261008-sim">
 </head>
 <body>
 
@@ -21,7 +23,7 @@
       </a>
       <div class="sidebar-project">
         <div class="p1">Hospitality Analytics Capstone</div>
-        <div class="p2">by Mahendra Singh · <a href="https://www.crackanalytics.com/" target="_blank" rel="noopener">CrackAnalytics</a></div>
+        <div class="p2">by Mahendra Singh · Trainer, <a href="https://excelr.in/data_analyst_course_delhi/" target="_blank" rel="noopener">ExcelR</a></div>
       </div>
     </div>
 
@@ -34,6 +36,7 @@
     <nav class="sidebar-nav" id="nav">
       <div class="nav-group-label">Home</div>
       <button data-view="overview" class="active"><span class="ic">🏠</span><span class="lbl">Home &amp; Roadmap</span></button>
+      <button data-view="schedule"><span class="ic">📅</span><span class="lbl">Project Schedule &amp; Status</span></button>
       <button data-view="progress"><span class="ic">📈</span><span class="lbl">My Progress</span></button>
 
       <div class="nav-group-label">Business Problem</div>
@@ -61,6 +64,10 @@
       <div class="nav-group-label">Practice</div>
       <button data-view="assignments"><span class="ic">📝</span><span class="lbl">Assignments</span></button>
       <button data-view="lab"><span class="ic">🧠</span><span class="lbl">Analyst Thinking Lab</span></button>
+      <div class="nav-group-label">Job Simulator</div>
+      <button data-view="incident"><span class="ic">🚨</span><span class="lbl">Incident Room</span><span class="nav-live">NEW</span></button>
+      <button data-view="broken"><span class="ic">🧩</span><span class="lbl">Broken Dashboard</span></button>
+      <button data-view="stakeholder"><span class="ic">💬</span><span class="lbl">Stakeholder Simulator</span></button>
 
       <div class="nav-group-label">Interview</div>
       <button data-view="interview"><span class="ic">🎤</span><span class="lbl">Interview Questions</span></button>
@@ -89,6 +96,7 @@
   </aside>
 
   <main class="main-content">
+<div class="ds-announce"><span class="ds-new">NEW</span> Your batch's presentation schedule and group status are live. <button data-goto="schedule">View project schedule →</button></div>
 
 <!-- ===================== HOME ===================== -->
 <section class="view active" id="view-overview">
@@ -96,43 +104,38 @@
     <div id="continue-banner" class="continue-banner" style="display:none;"></div>
     <div class="hero">
       <div class="hero-pattern" aria-hidden="true"></div>
-      <div class="hero-grid">
-        <div class="hero-content">
-          <div class="eyebrow">Capstone Project · Data Analytics Training Programme</div>
-          <h1>Shodwe<span class="accent-axon">Stay</span> Hospitality Analytics — <span class="hl-mark">from raw bookings to a defensible BI story</span>.</h1>
-          <p class="lead">A hands-on capstone built around a hotel-booking dataset for Shodwe Group: 134,590 individual bookings and 9,200 pre-aggregated occupancy records across 25 hotels in 4 cities, over 92 days (May–July 2022). You'll take the data through Excel, SQL, Tableau and Power BI, implement the 26-measure KPI register, from Revenue and Occupancy % down to week-over-week trends, in one Booking &amp; Occupancy dashboard, then defend the numbers in a QA review.</p>
-          <div class="hero-meta">
-            <span class="chip">134,590 Bookings</span>
-            <span class="chip">25 Hotels · 4 Cities</span>
-            <span class="chip">5 Tables · 2 Fact Grains</span>
-            <span class="chip">8 must-know KPIs · 26 in total</span>
-            <span class="chip">Excel → SQL → Tableau → Power BI → QA</span>
+      <div class="ds-hero">
+        <div class="ds-float ds-f1" id="hero-problem-card"></div>
+        <div class="ds-float ds-f2" id="hero-streak-card"></div>
+        <div class="ds-float ds-f3" id="hero-top-card"></div>
+        <div class="ds-float ds-f4" id="hero-today-card"></div>
+        <div class="ds-center">
+          <div class="ds-pill"><i></i> Live capstone · Excel → Tableau → Power BI → Final presentation</div>
+          <h1 class="ds-h1">Everything a <span>Data Analyst</span> needs. In one project.</h1>
+          <p class="ds-lead">Hotel-booking data for Shodwe Group: 134,590 bookings and 9,200 capacity records across 25 hotels in 4 cities, May–July 2022. 5 tables and 26 KPIs, built in Excel, MySQL, Tableau and Power BI, checked in QA and presented to your trainer every week, ending with the final presentation.</p>
+          <div class="ds-cta">
+            <button class="btn-dark ds-start" data-goto="journey-anchor">Start Learning Journey <span aria-hidden="true">→</span></button>
+            <button class="ds-link" data-goto="schedule"><span class="ds-play">▶</span> See this week's schedule</button>
           </div>
-          <div class="hero-cta">
-            <button class="btn-dark" data-goto="journey-anchor">Start Learning Journey</button>
+          <div class="ds-cta2">
             <a class="btn-yellow" href="https://www.crackanalytics.com/" target="_blank" rel="noopener">Interview Preparation ↗</a>
             <a class="btn-sky" href="https://www.certiva.co.in/" target="_blank" rel="noopener">Certification Dumps ↗</a>
             <a class="btn-ai" href="https://90daysailearning.vercel.app/" target="_blank" rel="noopener">🤖 AI Learning ↗</a>
           </div>
+          <div class="ds-stats"><span><b>134,590</b> bookings</span><span><b>25</b> hotels</span><span><b>5</b> tables</span><span><b>26</b> KPIs</span><span class="ds-live"><i></i> Weekly group reviews</span></div>
         </div>
-        <div class="hero-side">
-        <div class="hero-visual">
-          <img src="assets/hero-mockup.png" alt="Shodwe Hotel dashboard mockup — total bookings, guests, ADR cards, occupancy gauge, revenue overview and room-type mix">
-          <div class="cap">Layout reference for inspiration — illustrative values. Your dashboard must use the numbers from the dataset (see the KPI Library answer key).</div>
-        </div>
-        <div class="card social-card">
-          <img src="assets/mahendra-photo.jpg" alt="Mahendra Singh" class="social-avatar">
-          <div class="social-title">Learn with Mahendra Singh</div>
-          <div class="social-links">
-            <a href="https://www.youtube.com/channel/UC2q-vZWSlQpiGiMcSLUqnIg" id="social-youtube" target="_blank" rel="noopener"><img class="sl-badge-img" src="assets/youtube-icon.png" alt="">YouTube channel</a>
-            <a href="https://medium.com/@mahendraa1188" id="social-medium" target="_blank" rel="noopener"><img class="sl-badge-img" src="assets/medium-icon.png" alt="">Medium blog</a>
-            <a href="https://www.linkedin.com/in/mahendra-singh-%F0%9F%87%AE%F0%9F%87%B3%F0%9F%9A%80%E2%9D%84%EF%B8%8F-%F0%9F%90%8D-%F0%9F%A6%84-83699485/" id="social-linkedin" target="_blank" rel="noopener"><i class="sl-badge sl-li">in</i>LinkedIn</a>
-          </div>
-        </div>
+      </div>
+      <div class="ds-mentor card">
+        <img src="assets/mahendra-photo.jpg" alt="Mahendra Singh" class="social-avatar">
+        <div class="ds-mentor-t"><strong>Learn with Mahendra Singh</strong><span>Data Analyst Trainer · <a href="https://excelr.in/data_analyst_course_delhi/" target="_blank" rel="noopener">ExcelR</a></span></div>
+        <div class="social-links">
+          <a href="https://www.youtube.com/channel/UC2q-vZWSlQpiGiMcSLUqnIg" id="social-youtube" target="_blank" rel="noopener"><img class="sl-badge-img" src="assets/youtube-icon.png" alt="">YouTube</a>
+          <a href="https://medium.com/@mahendraa1188" id="social-medium" target="_blank" rel="noopener"><img class="sl-badge-img" src="assets/medium-icon.png" alt="">Medium</a>
+          <a href="https://www.linkedin.com/in/mahendra-singh-%F0%9F%87%AE%F0%9F%87%B3%F0%9F%9A%80%E2%9D%84%EF%B8%8F-%F0%9F%90%8D-%F0%9F%A6%84-83699485/" id="social-linkedin" target="_blank" rel="noopener"><i class="sl-badge sl-li">in</i>LinkedIn</a>
         </div>
       </div>
       <div class="callout-yellow">
-        <strong>How to use this site:</strong> Follow the <strong>Learning Journey</strong> below, one step at a time. Each step has a <em>Start →</em> button that opens the right page, and you can tick it off when you're done. Your progress is saved on this device. Know the KPI List and Data Model cold first (that's where most students fumble in QA, especially the two-fact-table composite join and the Friday–Saturday weekend rule), then practise with the Assignments and the Analyst Thinking Lab. For a much deeper question bank across SQL, Power BI, Tableau and Excel, <a href="https://www.crackanalytics.com/" target="_blank" rel="noopener">CrackAnalytics</a> is Mahendra's dedicated prep course.
+        <strong>How to use this site:</strong> Follow the <strong>Learning Journey</strong> below, one step at a time. Each step has a <em>Start →</em> button that opens the right page, and you can tick it off when you're done. Your progress is saved on this device. Know the KPI List and Data Model cold first (that's where most students fumble in QA, especially the two-fact-table composite join and the Friday–Saturday weekend rule), then practise with the Assignments and the Analyst Thinking Lab. For a much deeper question bank across SQL, Power BI, Tableau and Excel, <a href="https://www.crackanalytics.com/" target="_blank" rel="noopener">CrackAnalytics</a> has a dedicated question bank for interview prep.
       </div>
       <div class="disclaimer-box">
         <strong>🎓 Educational project.</strong> This hotel dataset is provided for training and the Shodwe brand is used for this capstone only. <strong>Never upload real guest data (names, phone numbers, payment details) into this project or any public portfolio.</strong>
@@ -309,9 +312,6 @@
       <h2>Install the tools, then load the data</h2>
       <p>Before you touch a dashboard: get Tableau and Power BI installed, and get all 5 tables loaded into MySQL so both tools have a real source to connect to.</p>
     </div>
-    <div class="card illustration-card mt-16" style="padding:0;overflow:hidden;"><img src="assets/setup-infographic.jpg" alt="Install the tools, then load the data — step-by-step infographic" style="width:100%;height:auto;display:block;"></div>
-    <div style="display:none;">
-    </div>
     <div class="setup-steps" id="setup-steps"></div>
     <div class="doc-grid mt-16" id="software-grid"></div>
 
@@ -327,6 +327,19 @@
       <h2>Project schedule</h2>
     </div>
     <div class="card timeline" id="timeline" style="padding:6px 20px;"></div>
+  </div>
+</section>
+
+<!-- ===================== PROJECT SCHEDULE ===================== -->
+<section class="view" id="view-schedule">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">📅 Project schedule &amp; status</div>
+      <h2>Weekly presentations, group by group</h2>
+      <p>Kick-off, then one presentation every week: Excel dashboard → Tableau dashboard → Power BI dashboard → Final presentation. SQL QA is presented in the Tableau week or the Power BI week. Only the trainer can change this page.</p>
+      <div class="sch-mode" id="sch-mode"></div>
+    </div>
+    <div id="sch-root"></div>
   </div>
 </section>
 
@@ -441,6 +454,8 @@
     </div>
     <div class="card mt-16" style="padding:0;overflow:hidden;"><img src="assets/schema-diagram.png" alt="Shodwe schema — fact_bookings, fact_aggregated_bookings, dim_hotels, dim_rooms, dim_date" id="model-img" style="width:100%;height:auto;display:block;cursor:zoom-in;"></div>
     <p style="font-size:12px;color:var(--ink-muted);margin-top:8px;">Click the diagram to enlarge it.</p>
+    <div class="section-head mt-40"><div class="eyebrow">Animated</div><h2>How each table joins to the next</h2><p>The animation walks through every relationship, one key at a time: the three shared dimensions on both facts, and the composite key that only the analysis view uses. Click to enlarge.</p></div>
+    <div class="card" style="padding:0;overflow:hidden;"><img src="assets/data-model-joins.gif" alt="Animated data model: each relationship lights up in turn with its join key" class="zoomable" style="width:100%;height:auto;display:block;cursor:zoom-in;"></div>
     <div class="section-head mt-40"><div class="eyebrow">Reference schema</div><h2>The interactive version</h2></div>
     <div class="model-grid">
       <div class="card"><div class="schema" id="schema-grid"></div></div>
@@ -704,6 +719,43 @@
   </div>
 </section>
 
+<!-- ===================== JOB SIMULATOR ===================== -->
+<section class="view" id="view-incident">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">🧪 Job Simulator · Incident Room</div>
+      <h2>Something's wrong with a number. Find out why.</h2>
+      <p>Real alerts from Shodwe Group revenue, guest-experience and finance leaders, each built on a trap this project teaches. Check the evidence, pick the root cause and the fix, then write the reply you would send.</p>
+    </div>
+    <div class="js-summary"></div>
+    <div id="inc-root"></div>
+  </div>
+</section>
+
+<section class="view" id="view-broken">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">🧪 Job Simulator · Broken Dashboard</div>
+      <h2>Review a dashboard before leadership sees it</h2>
+      <p>A junior analyst built this Booking &amp; Occupancy Overview from fact_bookings and the mart view. Find every tile that uses a wrong formula, table or denominator before it reaches leadership.</p>
+    </div>
+    <div class="js-summary"></div>
+    <div id="brk-root"></div>
+  </div>
+</section>
+
+<section class="view" id="view-stakeholder">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">🧪 Job Simulator · Stakeholder Simulator</div>
+      <h2>Clarify the request before you build</h2>
+      <p>Shodwe stakeholders rarely ask precise questions. Pick the clarifying questions that turn a vague request into a clear KPI spec, and skip the ones that waste their time.</p>
+    </div>
+    <div class="js-summary"></div>
+    <div id="stk-root"></div>
+  </div>
+</section>
+
 <!-- ===================== INTERVIEW ===================== -->
 <section class="view" id="view-interview">
   <div class="wrap">
@@ -878,7 +930,7 @@
   <div class="wrap footer-inner">
     <div>
       <a href="#" class="footer-brand brand-home-link" style="text-decoration:none;color:inherit;"><img src="assets/favicon.png" alt="" class="footer-logo"> ShodweStay Hospitality Analytics Capstone</a>
-      <div style="margin-top:4px;">by Mahendra Singh · CrackAnalytics. Built for the ShodweStay Hospitality Analytics capstone; the dataset is for training use only.</div>
+      <div style="margin-top:4px;">by Mahendra Singh · Data Analyst Trainer, <a href="https://excelr.in/data_analyst_course_delhi/" target="_blank" rel="noopener">ExcelR</a>. Built for the ShodweStay Hospitality Analytics capstone; the dataset is for training use only. <span style="opacity:.6;font-family:var(--mono);font-size:11px;">Site version 20261007-hosp</span></div>
     </div>
     <div class="footer-links">
       <a href="https://www.linkedin.com/in/mahendra-singh-83699485/" target="_blank" rel="noopener">LinkedIn</a>
@@ -936,7 +988,15 @@
   </div>
 </div>
 
-<script src="hosp-data.js"></script>
-<script src="app.js"></script>
+<script src="hosp-data.js?v=20261007-hosp"></script>
+<script>window.SITE_V = "20261007-hosp";</script>
+<script>document.write('<script src="schedule-config.js?t=' + Date.now() + '"><\/script>');</script>
+<script>document.write('<script src="project-schedule.js?t=' + Date.now() + '"><\/script>');</script>
+<script src="app.js?v=20261007-hosp"></script>
+<script src="sim-content.js?v=20261008-sim"></script>
+<script>window.SIM_CFG = {"key": "shodwe_hub", "syncKeys": ["shodwe_hub_state_v1"], "editorKey": null, "sqlTotal": null};</script>
+<script src="sim-kit.js?v=20261008-sim"></script>
+<script>window.VISIT_KEY = "shodwe_hub";</script>
+<script src="visit-kit.js?v=20261008-sim"></script>
 </body>
 </html>
